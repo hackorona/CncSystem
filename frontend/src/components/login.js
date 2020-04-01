@@ -49,7 +49,12 @@ export const Login = () => (
         <Typography variant="h4">{strings.login.title}</Typography>
         <TextField label={strings.login.username}/>
         <TextField label={strings.login.password}/>
-        <Button variant="primary">{strings.login.submit}</Button>
+        <Button
+          variant="contained"
+          color="primary"
+          disableElevation>
+            {strings.login.submit}
+        </Button>
       </FormGroup>
     </div>
     <div style={styles.imageContainer}>

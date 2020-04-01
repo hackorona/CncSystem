@@ -1,8 +1,12 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { Login } from './components/login';
 
-function App() {
+const App = ({ isLoggedIn = false }) => {
+  if (!isLoggedIn) {
+    return <Login/>
+  }
   return (
     <div className="App">
       <header className="App-header">

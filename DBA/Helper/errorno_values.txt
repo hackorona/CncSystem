@@ -1,0 +1,14 @@
+1000 - general error, cannot inserts row to dbo.Users table
+1001 - general error, cannot update row on dbo.Users table
+
+
+
+1010 - user name already exists on dbo.Users table
+1011 - identity number already exists on dbo.Users table (cannot assign sqme identity number to two users)
+1012 - user id not exists on dbo.Users table
+1013 - first Name/last Name should not be empty
+1014 - identity number should not be empty
+1015 - password hash/password salt should not be empty
+
+
+

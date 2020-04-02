@@ -3,12 +3,16 @@ import { FormGroup, TextField, Typography } from '@material-ui/core';
 import corona_bg from '../images/corona_bg.jpg';
 import { strings } from '../strings/strings';
 import { StyledButton } from './StyledButton';
+import { StyledInput } from './StyledInput';
 
 const styles = {
   container: {
     display: 'flex',
     width: '100%',
     height: '100%',
+  },
+  title: {
+    marginBottom: 42,
   },
   form: {
     display: 'flex',
@@ -42,7 +46,7 @@ const styles = {
     transform: 'rotate(-180deg)',
   },
   button: {
-    marginTop: 60,
+    marginTop: 46,
     alignSelf: 'center'
   }
 };
@@ -51,11 +55,11 @@ export const Login = () => (
   <div style={styles.container}>
     <div style={styles.form}>
       <FormGroup style={styles.formInner}>
-        <Typography variant="h4">
+        <Typography variant="h4" style={styles.title}>
           {strings.login.titleMain} {strings.login.titleSub}
         </Typography>
-        <TextField label={strings.login.username}/>
-        <TextField label={strings.login.password}/>
+        <StyledInput label={strings.login.username}/>
+        <StyledInput label={strings.login.password}/>
         <StyledButton
           variant="contained"
           color="primary"

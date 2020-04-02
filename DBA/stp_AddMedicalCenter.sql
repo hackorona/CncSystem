@@ -4,6 +4,7 @@ IF OBJECT_ID (N'dbo.stp_AddMedicalCenter', N'P') IS NOT NULL
 GO
 
 /* Version 1.0.0 - OhadP 02/04/2020 Initial Version */
+/* Version 1.0.1 - OhadP 02/04/2020 GeoLocation was added */
 
 /*
 @in_json format:	
@@ -12,6 +13,7 @@ GO
 		"street": "ויצמן",
 		"streetnumber": "6",
 		"city": "תל אביב יפו"
+		"geolocation":"31.4062525,35.0818155"
 	}
 
 @out_json format:
@@ -45,17 +47,20 @@ BEGIN
 	DECLARE @Street						nvarchar(200)
 	DECLARE @StreetNumber				nvarchar(20)
 	DECLARE @City						nvarchar(100)
+	DECLARE @GeoLocation				nvarchar(200)
 
 	SELECT	@MedicalCenterDescription	= MedicalCenterDescription,
 			@Street						= Street,
 			@StreetNumber				= StreetNumber,
-			@City						= City
+			@City						= City,
+			@GeoLocation				= GeoLocation
 	FROM	OPENJSON(@in_json)
 	WITH (
 			MedicalCenterDescription	nvarchar(200)		'$.medicalcenterdescription',
 			Street						nvarchar(200)		'$.street',
 			StreetNumber				nvarchar(20)		'$.streetnumber',
-			City						nvarchar(100)		'$.city'
+			City						nvarchar(100)		'$.city',
+			GeoLocation					nvarchar(100)		'$.geolocation'
 	) AS jsonValues
 	
 	/********************************************************************************************************************/
@@ -85,12 +90,14 @@ BEGIN
 						Street,
 						StreetNumber,
 						City,
-						Active)
+						Active,
+						GeoLocation)
 				SELECT	@MedicalCenterDescription,
 						@Street,
 						@StreetNumber,
 						@City,
-						1
+						1,
+						@GeoLocation
 
 			SET @MedicalCenterID = SCOPE_IDENTITY()
 		END TRY

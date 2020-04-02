@@ -4,6 +4,7 @@ IF OBJECT_ID (N'dbo.stp_GetMedicalCenter', N'P') IS NOT NULL
 GO
 
 /* Version 1.0.0 - OhadP 02/04/2020 Initial Version */
+/* Version 1.0.1 - OhadP 02/04/2020 GeoLocation was added */
 
 /*
 @in_json format:	
@@ -21,7 +22,8 @@ GO
 		"city": "תל אביב יפו",
 		"insertdate": "2020-03-30T22:49:05.800",
 		"updatedate": "2020-03-30T22:49:05.800",
-		"active": 1
+		"active": 1,
+		"geolocation":"31.4062525,35.0818155"
 	}
 
 -- User not exists
@@ -77,7 +79,8 @@ BEGIN
 				City						city,
 				InsertDate					insertdate,
 				UpdateDate					updatedate,
-				Active						active
+				Active						active,
+				GeoLocation					geolocation
 		FROM	dbo.MedicalCenters  
 		WHERE	MedicalCenterID	= @MedicalCenterID
 		FOR JSON AUTO

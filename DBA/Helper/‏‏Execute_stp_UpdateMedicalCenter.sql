@@ -9,7 +9,8 @@ SET @json = '{
 				"medicalcenterdescription": "איכילוב",
 				"street": "ויצמן",
 				"streetnumber": "6",
-				"city": "תל אביב יפו"
+				"city": "תל אביב יפו",
+				"geolocation":"31.4062525,35.0818155"
 			}'
 
 EXEC dbo.stp_UpdateMedicalCenter 

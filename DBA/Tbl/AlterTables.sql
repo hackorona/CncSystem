@@ -60,3 +60,7 @@ IF EXISTS (	SELECT	1
 			AND		is_nullable = 0)
 	ALTER TABLE dbo.MedicalCenters
 		ALTER COLUMN StreetNumber	nvarchar(10)	NULL
+
+IF COL_LENGTH('dbo.MedicalCenters','GeoLocation') IS NULL
+	ALTER TABLE dbo.MedicalCenters
+		ADD	GeoLocation		nvarchar(200)		NULL

@@ -4,6 +4,7 @@ IF OBJECT_ID (N'dbo.stp_UpdateMedicalCenter', N'P') IS NOT NULL
 GO
 
 /* Version 1.0.0 - OhadP 02/04/2020 Initial Version */
+/* Version 1.0.1 - OhadP 02/04/2020 GeoLocation was added */
 
 /*
 @in_json format:	
@@ -13,7 +14,8 @@ GO
 		"street": "ויצמן",
 		"streetnumber": "6",
 		"city": "תל אביב יפו",
-		"active": 1
+		"active": "1",
+		"geolocation": "31.4062525,35.0818155"
 	}
 
 @out_json format:
@@ -48,13 +50,15 @@ BEGIN
 	DECLARE @StreetNumber				nvarchar(20)
 	DECLARE @City						nvarchar(100)
 	DECLARE @Active						tinyint
+	DECLARE @GeoLocation				nvarchar(200)
 
 	SELECT	@MedicalCenterID			= MedicalCenterID,
 			@MedicalCenterDescription	= MedicalCenterDescription,
 			@Street						= Street,
 			@StreetNumber				= StreetNumber,
 			@City						= City,
-			@Active						= Active
+			@Active						= Active,
+			@GeoLocation				= GeoLocation
 	FROM	OPENJSON(@in_json)
 	WITH (
 			MedicalCenterID				int					'$.medicalcenterid',
@@ -62,7 +66,8 @@ BEGIN
 			Street						nvarchar(200)		'$.street',
 			StreetNumber				nvarchar(20)		'$.streetnumber',
 			City						nvarchar(100)		'$.city',
-			Active						tinyint				'$.active'
+			Active						tinyint				'$.active',
+			GeoLocation					nvarchar(200)		'$.geolocation'
 	) AS jsonValues
 	
 	/********************************************************************************************************************/
@@ -92,7 +97,8 @@ BEGIN
 					StreetNumber				= @StreetNumber,
 					City						= @City,
 					UpdateDate					= getdate(),
-					Active						= ISNULL (@Active, Active)
+					Active						= ISNULL (@Active, Active),
+					GeoLocation					= @GeoLocation
 			WHERE	MedicalCenterID				= @MedicalCenterID
 		END TRY
 		BEGIN CATCH

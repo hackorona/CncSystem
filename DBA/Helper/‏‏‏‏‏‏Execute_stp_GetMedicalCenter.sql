@@ -5,11 +5,11 @@ DECLARE @out_json NVARCHAR(max)
 DECLARE @in_json NVARCHAR(max)
 
 SET @in_json = '{
-					"medicalcenterid": "2"
+					"medicalcenterid": "1"
 				}'
 /*
 SET @in_json = '{
-					"userid": "90"
+					"medicalcenterid": "90"
 				}'
 */
 

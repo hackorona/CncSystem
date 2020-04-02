@@ -21,3 +21,7 @@
 2010 - medical center description or street or city should not be empty
 2011 - medical center id not exists on dbo.MedicalCenters table
 2012 - medical center description already exists on dbo.MedicalCenters table
+
+
+
+3000 - general error, cannot inserts/updates row to MedicalCentersNumOfPatientstable

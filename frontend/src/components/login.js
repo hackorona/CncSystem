@@ -1,7 +1,8 @@
 import React from 'react';
-import { FormGroup, TextField, Button, Typography } from '@material-ui/core';
+import { FormGroup, TextField, Typography } from '@material-ui/core';
 import corona_bg from '../images/corona_bg.jpg';
 import { strings } from '../strings/strings';
+import { StyledButton } from './StyledButton';
 
 const styles = {
   container: {
@@ -30,7 +31,7 @@ const styles = {
     backgroundSize: 'cover',
     opacity: 0.17,
   },
-  imageOverlay:   {
+  imageOverlay: {
     width: '100%',
     height: '100%',
     position: 'absolute',
@@ -39,6 +40,10 @@ const styles = {
     background: 'linear-gradient(144.74deg, #187C6A 0%, #55F2CE 99.99%, #68FFDC 100%)',
     mixBlendMode: 'multiply',
     transform: 'rotate(-180deg)',
+  },
+  button: {
+    marginTop: 60,
+    alignSelf: 'center'
   }
 };
 
@@ -46,15 +51,18 @@ export const Login = () => (
   <div style={styles.container}>
     <div style={styles.form}>
       <FormGroup style={styles.formInner}>
-        <Typography variant="h4">{strings.login.title}</Typography>
+        <Typography variant="h4">
+          {strings.login.titleMain} {strings.login.titleSub}
+        </Typography>
         <TextField label={strings.login.username}/>
         <TextField label={strings.login.password}/>
-        <Button
+        <StyledButton
           variant="contained"
           color="primary"
-          disableElevation>
+          disableElevation
+          style={styles.button}>
             {strings.login.submit}
-        </Button>
+        </StyledButton>
       </FormGroup>
     </div>
     <div style={styles.imageContainer}>

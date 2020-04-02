@@ -1,29 +1,32 @@
 
-IF OBJECT_ID (N'dbo.stp_AddUser', N'P') IS NOT NULL 
-	DROP PROCEDURE dbo.stp_AddUser
+IF OBJECT_ID (N'dbo.stp_GetComboData', N'P') IS NOT NULL 
+	DROP PROCEDURE dbo.stp_GetComboData
 GO
 
-/* Version 1.0.0 - OhadP 29/03/2020 Initial Version */
-/* Version 1.0.1 - OhadP 01/04/2020 Minor changes, fix errono details */
-/* Version 1.0.2 - OhadP 02/04/2020 MedicalCenterID and OrganizationID were added to @in_json */
+/* Version 1.0.0 - OhadP 02/04/2020 Initial Version */
 
 /*
 @in_json format:	
 	{
-		"firstname": "John", 
-		"lastname": "Doe",
-		"identitynumber": "365546511",
-		"username": "johnd",
-		"passwordhash": "hjjkhwkrhwrkwnfsd3424233fs9ferwlmlf",
-		"passwordsalt": "srwlkfsd094sfs4342lfds",
-		"medicalcenterid": "",
-		"organizationid": ""
+		"combodatadescription": "severity", 
+		"languageid": "1"
 	}
 
 @out_json format:
 	{ 
-		"userid": "2", 
-		"errorno": "0" 
+		[
+			"id": "1", 
+			"string": "Easy" 
+		],
+		[
+			"id": "2", 
+			"string": "Medium" 
+		],
+		[
+			"id": "3", 
+			"string": "Severe" 
+		],
+
 	}
 
 errorno values:
@@ -33,7 +36,7 @@ errorno values:
 	1016 - media center id not exists on dbo.MedicalCenters table
 */
 
-CREATE PROCEDURE dbo.stp_AddUser 
+CREATE PROCEDURE dbo.stp_GetComboData 
 		@in_json	NVARCHAR(max),
 		@out_json	NVARCHAR(max) OUTPUT
 

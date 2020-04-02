@@ -4,6 +4,7 @@ IF OBJECT_ID (N'dbo.stp_GetUser', N'P') IS NOT NULL
 GO
 
 /* Version 1.0.0 - OhadP 01/04/2020 Initial Version */
+/* Version 1.0.1 - OhadP 02/04/2020 MedicalCenterID and OrganizationID were added to @out_json */
 
 /*
 @in_json format:	
@@ -21,7 +22,9 @@ GO
 		"username": "johnd",
 		"active": "1",
 		"insertdate": "2020-03-30T22:49:05.800",
-		"updatedate": "2020-03-30T22:49:05.800"
+		"updatedate": "2020-03-30T22:49:05.800",
+		"medicalcenterid": "null",					-- if null, will no be displayed
+		"organizationid": "null"					-- if null, will no be displayed
 	}
 
 -- User not exists
@@ -77,7 +80,9 @@ BEGIN
 				UserName			username,
 				Active				active,
 				InsertDate			insertdate,
-				UpdateDate			updatedate
+				UpdateDate			updatedate,
+				MedicalCenterID		medicalcenterid,
+				OrganizationID		organizationid
 		FROM	dbo.Users  
 		WHERE	UserID = @UserID
 		FOR JSON AUTO

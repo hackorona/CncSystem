@@ -1,0 +1,3 @@
+Server: 			coronacaresrv
+Server full name: 		coronacaresrv.database.windows.net
+Server admin login: 	coronacaregroup

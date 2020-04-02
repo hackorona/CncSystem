@@ -1,3 +1,5 @@
+-- Last Change 02/04/2020
+
 DECLARE @out_json NVARCHAR(max)
 
 DECLARE @json NVARCHAR(max)
@@ -8,16 +10,20 @@ SET @json = '{
 				"identitynumber": "265546511",
 				"username": "ohadp",
 				"passwordhash": "hjjkhwkrhwrkwnfsd98fs9ferwlmlf",
-				"passwordsalt": "srwlkfsd094sfslfds"
+				"passwordsalt": "srwlkfsd094sfslfds",
+				"medicalcenterid": "",
+				"organizationid": ""
 			}'
 */
 SET @json = '{
-				"firstname": "John", 
-				"lastname": "Doe",
-				"identitynumber": "365546511",
-				"username": "johnd",
+				"firstname": "Idit", 
+				"lastname": "Ben",
+				"identitynumber": "225548711",
+				"username": "iditb",
 				"passwordhash": "hjjkhwkrhwrkwnfsd3424233fs9ferwlmlf",
-				"passwordsalt": "srwlkfsd094sfs4342lfds"
+				"passwordsalt": "srwlkfsd094sfs4342lfds",
+				"medicalcenterid": "1",
+				"organizationid": ""
 			}'
 
 EXEC dbo.stp_AddUser 

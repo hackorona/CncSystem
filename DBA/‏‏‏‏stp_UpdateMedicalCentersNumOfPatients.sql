@@ -78,8 +78,10 @@ BEGIN
 	BEGIN
 		BEGIN TRY
 			IF EXISTS (	SELECT	1
-						FROM	dbo.MedicalCenters
-						WHERE	MedicalCenterID = @MedicalCenterID)
+						FROM	dbo.MedicalCentersNumOfPatients
+						WHERE	MedicalCenterID			= @MedicalCenterID
+						AND		DepartmentID			= @DepartmentID
+						AND		Severity				= @Severity)
 			BEGIN
 				-- Update existsing Data
 				UPDATE	dbo.MedicalCentersNumOfPatients
@@ -89,6 +91,8 @@ BEGIN
 						OccupiedBeds			= @OccupiedBeds,
 						UpdateDate				= getdate()
 				WHERE	MedicalCenterID			= @MedicalCenterID
+				AND		DepartmentID			= @DepartmentID
+				AND		Severity				= @Severity
 			END
 			ELSE
 			BEGIN
@@ -106,8 +110,6 @@ BEGIN
 							@OccupiedBeds
 			END
 
-
-			
 		END TRY
 		BEGIN CATCH
 			-- general error, cannot inserts/updates row to MedicalCentersNumOfPatientstable

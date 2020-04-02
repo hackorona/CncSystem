@@ -14,6 +14,7 @@ const styles = {
   },
   title: {
     marginBottom: 42,
+    fontSize: 38,
     color: '#707E82',
     letterSpacing: '0.01em',
   },
@@ -99,7 +100,11 @@ export const Login = () => {
         <div style={styles.image}/>
         <div style={styles.imageOverlay}/>
         <div style={styles.imageTextOverlay}>
-          <Typography variant="h3">CoronaCare</Typography>
+          <Typography
+            variant="h3"
+            style={{ fontFamily: 'Poppins'}}>
+            Corona<span style={{ fontWeight: 500 }}>Care</span>
+          </Typography>
         </div>
       </div>
     </div>

@@ -7,7 +7,11 @@ const styles = {
   textField: {
     fontSize: 23,
     marginBottom: 22,
-  }
+    '.MuiInputLabel-root': {
+      fontSize: 23,
+      marginTop: -4,
+    }
+  },
 };
 
 export const StyledInput = (props) => {

@@ -13,6 +13,9 @@ const theme = createMuiTheme({
     primary: {
       main: '#21C5AA'
     }
+  },
+  typography: {
+    fontFamily: 'Assistant',
   }
 });
 

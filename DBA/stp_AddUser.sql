@@ -4,6 +4,7 @@ IF OBJECT_ID (N'dbo.stp_AddUser', N'P') IS NOT NULL
 GO
 
 /* Version 1.0.0 - OhadP 29/03/2020 Initial Version */
+/* Version 1.0.1 - OjadP 01/04/2020 Minor changes, fix errono details */
 
 /*
 @in_json format:	
@@ -14,7 +15,8 @@ GO
 		"username": "johnd",
 		"passwordhash": "hjjkhwkrhwrkwnfsd3424233fs9ferwlmlf",
 		"passwordsalt": "srwlkfsd094sfs4342lfds"
-	}'
+	}
+
 @out_json format:
 	{ 
 		"userid": "2", 
@@ -23,8 +25,8 @@ GO
 
 errorno values:
 	1000 - general error, cannot inserts row to dbo.Users table
-	1001 - user name already exists on dbo.Users table
-	1002 - identity number already exists on dbo.Users table (cannot assign sqme identity number to two users)
+	1010 - user name already exists on dbo.Users table
+	1011 - identity number already exists on dbo.Users table (cannot assign sqme identity number to two users)
 */
 
 CREATE PROCEDURE dbo.stp_AddUser 
@@ -76,14 +78,14 @@ BEGIN
 				FROM	dbo.Users
 				WHERE	UserName = @UserName)
 		-- user name already exists on dbo.Users table
-		SET @ErrorNo = 1001
+		SET @ErrorNo = 1010
 
 	IF @ErrorNo = 0 AND
 	   EXISTS (	SELECT	1
 				FROM	dbo.Users
 				WHERE	IdentityNumber = @IdentityNumber)
 		-- identity number already exists on dbo.Users table (cannot assign sqme identity number to two users)
-		SET @ErrorNo = 1002
+		SET @ErrorNo = 1011
 
 	/********************************************************************************************************************/
 

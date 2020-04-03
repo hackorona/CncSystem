@@ -64,3 +64,11 @@ IF EXISTS (	SELECT	1
 IF COL_LENGTH('dbo.MedicalCenters','GeoLocation') IS NULL
 	ALTER TABLE dbo.MedicalCenters
 		ADD	GeoLocation		nvarchar(200)		NULL
+
+IF COL_LENGTH('dbo.MedicalCentersNumOfPatients','isER') IS NULL
+	ALTER TABLE dbo.MedicalCentersNumOfPatients
+		ADD	isER		tinyint		NOT NULL	DEFAULT (1)
+
+IF COL_LENGTH('dbo.MedicalCentersNumOfPatients','BreadingMachines') IS NULL
+	ALTER TABLE dbo.MedicalCentersNumOfPatients
+		ADD	BreadingMachines	int		NULL

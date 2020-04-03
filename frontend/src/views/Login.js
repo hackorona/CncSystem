@@ -3,8 +3,8 @@ import { FormGroup, Typography } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
 import corona_bg from '../images/corona_bg.jpg';
 import { he } from '../strings/he';
-import { StyledButton } from './StyledButton';
-import { StyledInput } from './StyledInput';
+import { StyledButton } from '../components/StyledButton';
+import { StyledInput } from '../components/StyledInput';
 
 const styles = {
   container: {

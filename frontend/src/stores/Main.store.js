@@ -1,8 +1,14 @@
 import { observable, action, computed } from 'mobx';
 import MedicalCenter from './MedicalCenter.store';
 
+const userStub = {
+  name: 'ענת לוי',
+  role: 'אחות ראשית'
+};
+
 export default class Main {
-  @observable currentUser;
+  @observable currentUser = userStub;
+  @observable entity;
 
   constructor (externalStore) {
     if (externalStore) {
@@ -16,7 +22,8 @@ export default class Main {
   }
 
   @action onLogin = ({ username, password }) => {
-    this.currentUser = new MedicalCenter();
+    this.currentUser = userStub;
+    this.entity = new MedicalCenter();
   }
 
 }

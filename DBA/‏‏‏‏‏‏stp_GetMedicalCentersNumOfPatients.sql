@@ -4,6 +4,7 @@ IF OBJECT_ID (N'dbo.stp_GetMedicalCentersNumOfPatients', N'P') IS NOT NULL
 GO
 
 /* Version 1.0.0 - OhadP 02/04/2020 Initial Version */
+/* Version 1.0.1 - OhadP 03/04/2020 Adds isER and BreadingMachines to @out_json format */
 
 /*
 @in_json format:	
@@ -22,7 +23,9 @@ GO
 		"occupiedbeds": "89",
 		"vacantbeds": "35",
 		"insertdate": "2020-03-30T22:49:05.800",
-		"updatedate": "2020-03-30T22:49:05.800"
+		"updatedate": "2020-03-30T22:49:05.800",
+		"iser": 0,
+		"breadingmachines": 5
 	}
 
 errorno values:
@@ -70,7 +73,9 @@ BEGIN
 						OccupiedBeds			occupiedbeds,
 						VacantBeds				vacantbeds,
 						InsertDate				insertdate,
-						UpdateDate				updatedate
+						UpdateDate				updatedate,
+						isER					iser,
+						BreadingMachines		breadingmachines
 				FROM	dbo.MedicalCentersNumOfPatients  
 				WHERE	1 = 1 ' + char(13)
 

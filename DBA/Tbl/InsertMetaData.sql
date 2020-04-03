@@ -74,7 +74,7 @@ SELECT @ComboDataDescription = 'Organization', @ComboDataID = 2, @StringID = 200
 IF NOT EXISTS (SELECT 1 FROM dbo.ComboData WHERE ComboDataDescription = @ComboDataDescription AND ComboDataID = @ComboDataID)
 	INSERT INTO dbo.ComboData (ComboDataDescription, ComboDataID, StringID) SELECT @ComboDataDescription, @ComboDataID, @StringID
 
-SELECT @ComboDataDescription = 'Organization', @ComboDataID = 2, @StringID = 201
+SELECT @ComboDataDescription = 'Organization', @ComboDataID = 1, @StringID = 201
 IF NOT EXISTS (SELECT 1 FROM dbo.ComboData WHERE ComboDataDescription = @ComboDataDescription AND ComboDataID = @ComboDataID)
 	INSERT INTO dbo.ComboData (ComboDataDescription, ComboDataID, StringID) SELECT @ComboDataDescription, @ComboDataID, @StringID
 

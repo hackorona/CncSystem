@@ -4,6 +4,7 @@ IF OBJECT_ID (N'dbo.stp_UpdateMedicalCentersNumOfPatients', N'P') IS NOT NULL
 GO
 
 /* Version 1.0.0 - OhadP 02/04/2020 Initial Version */
+/* Version 1.0.1 - OhadP 03/04/2020 Adds isER and BreadingMachines to dbo.MedicalCentersNumOfPatients table */
 
 /*
 @in_json format:	
@@ -12,7 +13,9 @@ GO
 		"departmentid": "5",
 		"severity": "1",
 		"availablebeds": "100",
-		"occupiedbeds": "76"
+		"occupiedbeds": "76",
+		"iser": 0,
+		"breadingmachines": 5
 	}
 
 @out_json format:
@@ -45,19 +48,25 @@ BEGIN
 	DECLARE @Severity			int
 	DECLARE @AvailableBeds		int
 	DECLARE @OccupiedBeds		int
+	DECLARE @isER				tinyint
+	DECLARE @BreadingMachines	int
 
 	SELECT	@MedicalCenterID		= MedicalCenterID,
 			@DepartmentID			= DepartmentID,
 			@Severity				= Severity,
 			@AvailableBeds			= AvailableBeds,
-			@OccupiedBeds			= OccupiedBeds
+			@OccupiedBeds			= OccupiedBeds,
+			@isER					= isER,
+			@BreadingMachines		= BreadingMachines
 	FROM	OPENJSON(@in_json)
 	WITH (
 			MedicalCenterID			int			'$.medicalcenterid',
 			DepartmentID			int			'$.departmentid',
 			Severity				int			'$.severity',
 			AvailableBeds			int			'$.availablebeds',
-			OccupiedBeds			int			'$.occupiedbeds'
+			OccupiedBeds			int			'$.occupiedbeds',
+			isER					tinyint		'$.iser',
+			BreadingMachines		int			'$.breadingmachines'
 	) AS jsonValues
 	
 	/********************************************************************************************************************/
@@ -89,7 +98,9 @@ BEGIN
 						Severity				= @Severity,
 						AvailableBeds			= @AvailableBeds,
 						OccupiedBeds			= @OccupiedBeds,
-						UpdateDate				= getdate()
+						UpdateDate				= getdate(),
+						isER					= @isER,
+						BreadingMachines		= @BreadingMachines
 				WHERE	MedicalCenterID			= @MedicalCenterID
 				AND		DepartmentID			= @DepartmentID
 				AND		Severity				= @Severity
@@ -102,12 +113,16 @@ BEGIN
 							DepartmentID,
 							Severity,
 							AvailableBeds,
-							OccupiedBeds)
+							OccupiedBeds,
+							isER,
+							BreadingMachines)
 					SELECT	@MedicalCenterID,
 							@DepartmentID,
 							@Severity,
 							@AvailableBeds,
-							@OccupiedBeds
+							@OccupiedBeds,
+							@isER,
+							@BreadingMachines
 			END
 
 		END TRY

@@ -5,15 +5,15 @@ DECLARE @out_json NVARCHAR(max)
 DECLARE @in_json NVARCHAR(max)
 
 SET @in_json = '{
-					"userid": "2"
+					"medicalcenterid": "1"
 				}'
 /*
 SET @in_json = '{
-					"userid": "90"
+					"medicalcenterid": "90"
 				}'
 */
 
-EXEC dbo.stp_GetUser 
+EXEC dbo.stp_GetMedicalCenter
 		@in_json	= @in_json,
 		@out_json	= @out_json OUTPUT
 

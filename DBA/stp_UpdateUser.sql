@@ -4,6 +4,7 @@ IF OBJECT_ID (N'dbo.stp_UpdateUser', N'P') IS NOT NULL
 GO
 
 /* Version 1.0.0 - OhadP 01/04/2020 Initial Version */
+/* Version 1.0.1 - OhadP 02/04/2020 MedicalCenterID and OrganizationID were added to @in_json */
 
 /*
 @in_json format:	
@@ -12,7 +13,9 @@ GO
 		"firstname": "John", 
 		"lastname": "Doe",
 		"identitynumber": "365546511",
-		"active": 1
+		"active": 1,
+		"medicalcenterid": "",
+		"organizationid": ""
 	}
 
 @out_json format:
@@ -51,20 +54,26 @@ BEGIN
 	DECLARE @LastName			nvarchar(200)
 	DECLARE @IdentityNumber		nvarchar(40)
 	DECLARE @UserName			nvarchar(200)
-	DECLARE @Active				tinyint 
+	DECLARE @Active				tinyint
+	DECLARE @MedicalCenterID	int
+	DECLARE @OrganizationID		int
 
-	SELECT	@UserID			= UserID,
-			@FirstName		= FirstName,
-			@LastName		= LastName,
-			@IdentityNumber	= IdentityNumber,
-			@Active			= Active
+	SELECT	@UserID				= UserID,
+			@FirstName			= FirstName,
+			@LastName			= LastName,
+			@IdentityNumber		= IdentityNumber,
+			@Active				= Active,
+			@MedicalCenterID	= MedicalCenterID,
+			@OrganizationID		= OrganizationID
 	FROM	OPENJSON(@in_json)
 	WITH (
 			UserID				int					'$.userid',
 			FirstName			nvarchar(200)		'$.firstname',
 			LastName			nvarchar(200)		'$.lastname',
 			IdentityNumber		nvarchar(40)		'$.identitynumber',
-			Active				tinyint				'$.active'
+			Active				tinyint				'$.active',
+			MedicalCenterID		int					'$.medicalcenterid',
+			OrganizationID		int					'$.organizationid'
 	) AS jsonValues
 	
 	/********************************************************************************************************************/
@@ -87,6 +96,21 @@ BEGIN
 		-- identity number should not be empty
 		SET @ErrorNo = 1014
 
+	IF @ErrorNo = 0 AND 
+	   @MedicalCenterID > 0 AND
+	   NOT EXISTS (	SELECT	1
+					FROM	dbo.MedicalCenters
+					WHERE	MedicalCenterID = @MedicalCenterID)
+		-- media center id not exists on dbo.MedicalCenters table
+		SET @ErrorNo = 1016
+
+	-- no medical center associate with this user
+	IF @MedicalCenterID = 0 
+	BEGIN
+		SET @MedicalCenterID = NULL
+		SET @OrganizationID = NULL
+	END
+
 	/********************************************************************************************************************/
 
 	IF @ErrorNo = 0
@@ -97,7 +121,9 @@ BEGIN
 					LastName		= @LastName,
 					IdentityNumber	= @IdentityNumber,
 					Active			= ISNULL (@Active, Active),
-					UpdateDate		= getdate()
+					UpdateDate		= getdate(),
+					MedicalCenterID	= @MedicalCenterID,
+					OrganizationID	= @OrganizationID
 			WHERE	UserID			= @UserID
 		END TRY
 		BEGIN CATCH

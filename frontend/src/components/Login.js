@@ -2,7 +2,7 @@ import React from 'react';
 import { FormGroup, Typography } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
 import corona_bg from '../images/corona_bg.jpg';
-import { strings } from '../strings/strings';
+import { he } from '../strings/he';
 import { StyledButton } from './StyledButton';
 import { StyledInput } from './StyledInput';
 
@@ -66,7 +66,7 @@ const styles = {
   }
 };
 
-export const Login = () => {
+export const Login = ({ onLogin }) => {
   const theme = useTheme();
 
   return (
@@ -79,20 +79,21 @@ export const Login = () => {
                 color: theme.palette.primary.main,
                 fontWeight: 'bold'
               }}>
-                {strings.login.titleMain}
-            </span> {strings.login.titleSub}
+                {he.login.titleMain}
+            </span> {he.login.titleSub}
           </Typography>
-          <StyledInput label={strings.login.username}/>
+          <StyledInput label={he.login.username}/>
           <StyledInput
-            label={strings.login.password}
+            label={he.login.password}
             type="password"
           />
           <StyledButton
             variant="contained"
             color="primary"
+            onClick={onLogin}
             disableElevation
             style={styles.button}>
-            {strings.login.submit}
+            {he.login.submit}
           </StyledButton>
         </FormGroup>
       </div>

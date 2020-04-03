@@ -1,7 +1,8 @@
 import { observable, action, computed } from 'mobx';
+import MedicalCenter from './MedicalCenter.store';
 
 export default class Main {
-  @observable isLoggedIn = false;
+  @observable currentUser;
 
   constructor (externalStore) {
     if (externalStore) {
@@ -12,6 +13,10 @@ export default class Main {
   init (rootStore) {
     this.rootStore = rootStore;
     return this;
+  }
+
+  @action onLogin = ({ username, password }) => {
+    this.currentUser = new MedicalCenter();
   }
 
 }

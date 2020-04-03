@@ -1,6 +1,10 @@
 import { observable, action, computed } from 'mobx';
 
-export default class User {
+export default class MedicalCenter {
+  @observable type = 'hospital';
+  @observable name;
+  @observable address;
+  @observable departments = {};
 
   constructor (externalStore) {
     if (externalStore) {

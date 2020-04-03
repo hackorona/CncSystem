@@ -1,4 +1,4 @@
-export const strings = {
+export const he = {
   login: {
     titleMain: "ברוכים הבאים.",
     titleSub: "התחברו למערכת",

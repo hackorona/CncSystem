@@ -1,12 +1,19 @@
 import React from 'react';
+import withMobx from './HOCs/WithMobx';
 import logo from './logo.svg';
 import './App.css';
 import { Login } from './components/Login';
+import createStore from './stores/index';
 
-const App = ({ isLoggedIn = false }) => {
+const store = createStore();
+
+const App = () => {
+  const { isLoggedIn } = store.main;
+
   if (!isLoggedIn) {
     return <Login/>
   }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -27,4 +34,7 @@ const App = ({ isLoggedIn = false }) => {
   );
 }
 
-export default App;
+export default withMobx(
+  App,
+  store
+);

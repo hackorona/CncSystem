@@ -82,3 +82,13 @@ SELECT @ComboDataDescription = 'Organization', @ComboDataID = 2, @StringID = 202
 IF NOT EXISTS (SELECT 1 FROM dbo.ComboData WHERE ComboDataDescription = @ComboDataDescription AND ComboDataID = @ComboDataID)
 	INSERT INTO dbo.ComboData (ComboDataDescription, ComboDataID, StringID) SELECT @ComboDataDescription, @ComboDataID, @StringID
 
+/****************************************************************************************************************/
+/*		dbo.SystemParameters																					*/
+/****************************************************************************************************************/
+
+DECLARE @ParameterDescrition	nvarchar(100)
+
+SELECT	@ParameterDescrition = 'ReserveBedHours'
+IF NOT EXISTS (	SELECT 1 FROM dbo.SystemParameters WHERE ParameterDescrition = @ParameterDescrition )
+	INSERT INTO dbo.SystemParameters (ParameterDescrition, ParameterValue, ParameterRemark)
+		SELECT	@ParameterDescrition, '4', 'The number of hours to reserve bed in medical center for a patient '

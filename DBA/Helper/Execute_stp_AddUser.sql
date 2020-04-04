@@ -16,21 +16,19 @@ SET @json = '{
 			}'
 */
 SET @json = '{
-				"firstname": "Idit", 
-				"lastname": "Ben",
-				"identitynumber": "225548711",
-				"username": "iditb",
-				"passwordhash": "hjjkhwkrhwrkwnfsd3424233fs9ferwlmlf",
-				"passwordsalt": "srwlkfsd094sfs4342lfds",
+				"firstname": "Moshe", 
+				"lastname": "Davidi",
+				"identitynumber": "56982335",
+				"username": "moshed",
+				"passwordhash": "hjjkhwkrhwrkgdlgdwnfsd3424233fs9ferwlmlf",
+				"passwordsalt": "srwlkfsd094sfs434fsfs2lfds",
 				"medicalcenterid": "1",
-				"organizationid": ""
+				"organizationid": "1"
 			}'
 
 EXEC dbo.stp_AddUser 
-		@in_json	= @json,
-		@out_json	= @out_json OUTPUT
-
-select @out_json out_json
+		@in_json	= @json /*,
+		@out_json	= @out_json OUTPUT */
 
 
 select * from Users

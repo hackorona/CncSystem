@@ -1,35 +1,29 @@
 
-IF OBJECT_ID (N'dbo.stp_ActivateUser', N'P') IS NOT NULL 
-	DROP PROCEDURE dbo.stp_ActivateUser
+IF OBJECT_ID (N'dbo.stp_AddReservedBeds', N'P') IS NOT NULL 
+	DROP PROCEDURE dbo.stp_AddReservedBeds
 GO
 
-/* Version 1.0.0 - OhadP 01/04/2020 Initial Version */
+/* Version 1.0.0 - OhadP 03/04/2020 Initial Version */
 /* Version 1.0.1 - OhadP 04/04/2020 add SELECT @out_json, default was added to @out_json and it's not required */
 
 /*
 @in_json format:	
 	{
-		"userid": "12" 
+		"medicalcenterid": "1", 
+		"departmentid": "3"
 	}
 
 @out_json format:
 	{ 
-		"userid": "2", 
-		"firstname": "john",
-		"lastname": "doe",
-		"identitynumber": "123456789",
-		"username": "johnd",
-		"active": "1",
-		"insertdate": "2020-03-30T22:49:05.800",
-		"updatedate": "2020-03-30T22:49:05.800" 
+		"errorno": "0" 
 	}
 
 errorno values:
-	1001 - general error, cannot update row on dbo.Users table
-	1012 - the user id not exists on dbo.Users table
+	4000 - general error, cannot inserts row to dbo.MedicalCentersPatients table
+	
 */
 
-CREATE PROCEDURE dbo.stp_ActivateUser 
+CREATE PROCEDURE dbo.stp_AddReservedBeds 
 		@in_json	NVARCHAR(max),
 		@out_json	NVARCHAR(max) = NULL OUTPUT
 
@@ -37,18 +31,21 @@ AS
 BEGIN
 
 	/********************************************************************************************************************/
-	
+
 	-- local parameters
 	DECLARE @ErrorNo			int = 0
 
 	-- gets data from json string
 
-	DECLARE @UserID				int
+	DECLARE @MedicalCenterID	int
+	DECLARE @DepartmentID		int
 
-	SELECT	@UserID		= UserID
+	SELECT	@MedicalCenterID	= MedicalCenterID,
+			@DepartmentID		= DepartmentID
 	FROM	OPENJSON(@in_json)
 	WITH (
-			UserID				int		'$.userid'
+			MedicalCenterID		int					'$.medicalcenterid',
+			DepartmentID		int					'$.departmentid'
 	) AS jsonValues
 	
 	/********************************************************************************************************************/
@@ -58,31 +55,31 @@ BEGIN
 		SET @ErrorNo = 0
 
 	IF NOT EXISTS (	SELECT	1
-					FROM	dbo.Users
-					WHERE	UserID = @UserID)
-		-- the user id not exists on dbo.Users table
-		SET @ErrorNo = 1012
+					FROM	dbo.MedicalCenters
+					WHERE	MedicalCenterID = @MedicalCenterID)
+		-- medical center id not exists on dbo.MedicalCenters table
+		SET @ErrorNo = 1016
 
 	/********************************************************************************************************************/
 
 	IF @ErrorNo = 0
 	BEGIN
 		BEGIN TRY
-			UPDATE	dbo.Users
-			SET		Active		= 1,
-					UpdateDate	= getdate()
-			WHERE	UserID		= @UserID
+			INSERT INTO dbo.ReservedBeds (
+						MedicalCenterID,
+						DepartmentID)
+				SELECT	@MedicalCenterID,
+						@DepartmentID
 		END TRY
 		BEGIN CATCH
-			-- general error, cannot update row on dbo.Users table
-			SET @ErrorNo = 1001
+			-- general error, cannot inserts row to dbo.MedicalCentersPatients table
+			SET @ErrorNo = 4000
 		END CATCH
 	END		-- IF @ErrorNo = 0
 
 	/********************************************************************************************************************/
 
-	SET @out_json = '{ "userid": "' + ISNULL (CONVERT (nvarchar(30), @UserID), 'null') + '", "errorno": "' + ISNULL (CONVERT (nvarchar(30), @ErrorNo), 'null') + '" }'
+	SET @out_json = '{ "errorno": "' + ISNULL (CONVERT (nvarchar(30), @ErrorNo), 'null') + '" }'
 
 	SELECT	@out_json
-
 END

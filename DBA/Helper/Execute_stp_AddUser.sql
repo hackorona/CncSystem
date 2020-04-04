@@ -1,4 +1,4 @@
--- Last Change 02/04/2020
+-- Last Change 04/04/2020
 
 DECLARE @out_json NVARCHAR(max)
 
@@ -12,18 +12,20 @@ SET @json = '{
 				"passwordhash": "hjjkhwkrhwrkwnfsd98fs9ferwlmlf",
 				"passwordsalt": "srwlkfsd094sfslfds",
 				"medicalcenterid": "",
-				"organizationid": ""
+				"organizationid": "",
+				"userrole": "Doctor"
 			}'
 */
 SET @json = '{
-				"firstname": "Moshe", 
-				"lastname": "Davidi",
-				"identitynumber": "56982335",
-				"username": "moshed",
+				"firstname": "Noam", 
+				"lastname": "Keshet",
+				"identitynumber": "56954335",
+				"username": "noamk",
 				"passwordhash": "hjjkhwkrhwrkgdlgdwnfsd3424233fs9ferwlmlf",
 				"passwordsalt": "srwlkfsd094sfs434fsfs2lfds",
 				"medicalcenterid": "1",
-				"organizationid": "1"
+				"organizationid": "1",
+				"userrole": "Doctor"
 			}'
 
 EXEC dbo.stp_AddUser 
@@ -31,7 +33,7 @@ EXEC dbo.stp_AddUser
 		@out_json	= @out_json OUTPUT */
 
 
-select * from Users
+select * from dbo.Users
 
 /*
 

@@ -7,5 +7,3 @@ EXEC dbo.stp_GetMedicalCenters
 
 select @out_json
 
-
-		

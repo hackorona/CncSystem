@@ -1,4 +1,4 @@
--- Last Change 03/04/2020
+-- Last Change 04/04/2020
 
 DECLARE @out_json NVARCHAR(max)
 
@@ -11,7 +11,7 @@ SET @json = '{
 				"availablebeds": "100",
 				"occupiedbeds": "78",
 				"iser": 0,
-				"breadingmachines": 5
+				"ventilationmachines": 5
 			}'
 /*
 SET @json = '{
@@ -21,7 +21,7 @@ SET @json = '{
 				"availablebeds": "126",
 				"occupiedbeds": "89",
 				"iser": 1,
-				"breadingmachines": 4
+				"ventilationmachines": 4
 			}'
 */
 /*
@@ -32,9 +32,9 @@ SET @json = '{
 				"availablebeds": "24",
 				"occupiedbeds": "21",
 				"iser": 1,
-				"breadingmachines": 15
+				"ventilationmachines": 15
 			}'
-*/
+*/	
 /*
 SET @json = '{
 				"medicalcenterid": "1",
@@ -43,7 +43,7 @@ SET @json = '{
 				"availablebeds": "24",
 				"occupiedbeds": "21",
 				"iser": 1,
-				"breadingmachines": 15
+				"ventilationmachines": 15
 			}'
 */
 

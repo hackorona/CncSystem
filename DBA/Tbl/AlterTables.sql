@@ -84,3 +84,19 @@ IF OBJECT_ID (N'dbo.Patients', N'U') IS NOT NULL
 	DROP TABLE dbo.Patients
 
 /************************************************************************************************************************/
+
+IF COL_LENGTH('dbo.MedicalCentersNumOfPatients','BreadingMachines') IS NOT NULL
+	ALTER TABLE dbo.MedicalCentersNumOfPatients
+		DROP COLUMN	BreadingMachines
+
+IF COL_LENGTH('dbo.MedicalCentersNumOfPatients','VentilationMachines') IS NULL
+	ALTER TABLE dbo.MedicalCentersNumOfPatients
+		ADD	VentilationMachines		int		NULL
+
+IF COL_LENGTH('dbo.MedicalCenters','MedicalCentersType') IS NULL
+	ALTER TABLE dbo.MedicalCenters
+		ADD	MedicalCentersType		int		NULL
+
+IF COL_LENGTH('dbo.Users','UserRole') IS NULL
+	ALTER TABLE dbo.Users
+		ADD	UserRole				nvarchar(100)		NULL

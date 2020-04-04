@@ -6,6 +6,7 @@ GO
 /* Version 1.0.0 - OhadP 01/04/2020 Initial Version */
 /* Version 1.0.1 - OhadP 02/04/2020 MedicalCenterID and OrganizationID were added to @out_json */
 /* Version 1.0.2 - OhadP 04/04/2020 add SELECT @out_json, default was added to @out_json and it's not required */
+/* Version 1.0.3 - OhadP 04/04/2020 add UserRole column */
 
 /*
 @in_json format:	
@@ -25,7 +26,8 @@ GO
 		"insertdate": "2020-03-30T22:49:05.800",
 		"updatedate": "2020-03-30T22:49:05.800",
 		"medicalcenterid": "null",					-- if null, will no be displayed
-		"organizationid": "null"					-- if null, will no be displayed
+		"organizationid": "null",					-- if null, will no be displayed
+		"userrole": "Doctor"
 	}
 
 -- User not exists
@@ -83,7 +85,8 @@ BEGIN
 				InsertDate			insertdate,
 				UpdateDate			updatedate,
 				MedicalCenterID		medicalcenterid,
-				OrganizationID		organizationid
+				OrganizationID		organizationid,
+				UserRole			userrole
 		FROM	dbo.Users  
 		WHERE	UserID = @UserID
 		FOR JSON AUTO

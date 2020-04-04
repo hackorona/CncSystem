@@ -7,6 +7,7 @@ GO
 /* Version 1.0.1 - OhadP 02/04/2020 MedicalCenterID and OrganizationID were added to @in_json */
 /* Version 1.0.2 - OhadO 04/04/2020 fix issue with OrganizationID */
 /* Version 1.0.3 - OhadP 04/04/2020 add SELECT @out_json, default was added to @out_json and it's not required */
+/* Version 1.0.4 - OhadP 04/04/2020 add UserRole column */
 
 /*
 @in_json format:	
@@ -17,7 +18,8 @@ GO
 		"identitynumber": "365546511",
 		"active": 1,
 		"medicalcenterid": "",
-		"organizationid": ""
+		"organizationid": "",
+		"userrole": "Doctor"
 	}
 
 @out_json format:
@@ -61,6 +63,7 @@ BEGIN
 	DECLARE @Active				tinyint
 	DECLARE @MedicalCenterID	int
 	DECLARE @OrganizationID		int
+	DECLARE @UserRole			nvarchar(100)
 
 	SELECT	@UserID				= UserID,
 			@FirstName			= FirstName,
@@ -68,7 +71,8 @@ BEGIN
 			@IdentityNumber		= IdentityNumber,
 			@Active				= Active,
 			@MedicalCenterID	= MedicalCenterID,
-			@OrganizationID		= OrganizationID
+			@OrganizationID		= OrganizationID,
+			@UserRole			= UserRole
 	FROM	OPENJSON(@in_json)
 	WITH (
 			UserID				int					'$.userid',
@@ -77,7 +81,8 @@ BEGIN
 			IdentityNumber		nvarchar(40)		'$.identitynumber',
 			Active				tinyint				'$.active',
 			MedicalCenterID		int					'$.medicalcenterid',
-			OrganizationID		int					'$.organizationid'
+			OrganizationID		int					'$.organizationid',
+			UserRole			nvarchar(100)		'$.userrole'
 	) AS jsonValues
 	
 	/********************************************************************************************************************/
@@ -129,7 +134,8 @@ BEGIN
 					Active			= ISNULL (@Active, Active),
 					UpdateDate		= getdate(),
 					MedicalCenterID	= @MedicalCenterID,
-					OrganizationID	= @OrganizationID
+					OrganizationID	= @OrganizationID,
+					UserRole		= @UserRole
 			WHERE	UserID			= @UserID
 		END TRY
 		BEGIN CATCH

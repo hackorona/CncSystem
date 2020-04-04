@@ -20,6 +20,13 @@ const styles = {
   subtitle: {
     marginBottom: '25px !important',
   },
+  row: {
+    marginBottom: 10,
+    alignItems: 'center',
+  },
+  label: {
+    width: 110,
+  },
   buttonContainer: {
     display: 'flex',
     justifyContent: 'center',
@@ -35,7 +42,7 @@ export const Recommendation = () => {
       <Typography variant='h5' css={styles.title}>
         הפניית חולים חיוביים
       </Typography>
-      <Typography>
+      <Typography css={styles.subtitle}>
         הזינו את פרטי המטופל על מנת לקבל המלצה למקום אישפוזו
       </Typography>
       <div css={styles.containerInner}>
@@ -45,7 +52,6 @@ export const Recommendation = () => {
              תעודת זהות
             </Typography>
             <TextField
-              type="number"
               variant='outlined'
               size='small'
               css={styles.input}
@@ -56,7 +62,6 @@ export const Recommendation = () => {
             עיר מגורים
             </Typography>
             <TextField
-              type="number"
               variant='outlined'
               size='small'
               css={styles.input}
@@ -67,7 +72,6 @@ export const Recommendation = () => {
             רחוב
             </Typography>
             <TextField
-              type="number"
               variant='outlined'
               size='small'
               css={styles.input}

@@ -1,6 +1,12 @@
 import React from 'react';
 import withMobx from './HOCs/WithMobx';
 import './App.css';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 import { Observer } from 'mobx-react';
 import { Login } from './views/Login';
 import createStore from './stores/index';
@@ -19,7 +25,16 @@ const App = () => {
         }
 
         return (
-          <MainDashboard store={store}/>
+          <Router>
+          <Switch>
+            <Route path="/login">
+              <Login onLogin={onLogin}/>
+            </Route>
+            <Route path="/report">
+              <MainDashboard store={store}/>
+            </Route>
+          </Switch>
+          </Router>
         );
       }}
     </Observer>

@@ -88,10 +88,7 @@ export const Login = ({ onLogin }) => {
             type="password"
           />
           <StyledButton
-            variant="contained"
-            color="primary"
             onClick={onLogin}
-            disableElevation
             style={styles.button}>
             {he.login.submit}
           </StyledButton>

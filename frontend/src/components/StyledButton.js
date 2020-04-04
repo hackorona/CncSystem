@@ -18,7 +18,13 @@ const styles = {
 
 export const StyledButton = (props) => {
   return (
-    <Button {...props} css={styles.button}>
+    <Button
+      variant="contained"
+      color="primary"
+      disableElevation
+      css={styles.button}
+      {...props}
+    >
       {props.children}
     </Button>
   )

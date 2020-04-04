@@ -135,6 +135,16 @@ ELSE
 	Severity					3				202				Easy
 */
 
+IF OBJECT_ID (N'dbo.SystemParameters', N'U') IS NULL 
+	CREATE TABLE dbo.SystemParameters (
+		ParameterDescrition		nvarchar(100)	NOT NULL,
+		ParameterValue			nvarchar(100)	NOT NULL,
+		ParameterRemark			nvarchar(500)	NOT NULL,
+		CONSTRAINT PK_SystemParameters PRIMARY KEY(ParameterDescrition)
+	)
+ELSE
+	print ('dbo.SystemParameters table already exists')
+
 /************************************************************************************************************/
 /* Data																										*/
 /************************************************************************************************************/
@@ -170,5 +180,18 @@ IF OBJECT_ID (N'dbo.PatientsLog', N'U') IS NULL
 ELSE
 	print ('dbo.PatientsLog table already exists')
 
+IF OBJECT_ID (N'dbo.ReservedBeds', N'U') IS NULL 
+	CREATE TABLE dbo.ReservedBeds (
+		LogDate						datetime		NOT NULL	DEFAULT (getdate()),
+		MedicalCenterID				int				NOT NULL,
+		DepartmentID				int				NOT NULL,
+		CONSTRAINT PK_ReservedBeds PRIMARY KEY(LogDate)
+	)	
+ELSE
+	print ('dbo.ReservedBeds table already exists')
+
+If INDEXPROPERTY (OBJECT_ID ('ReservedBeds'), 'ix_ReservedBeds', 'IndexId') IS NULL
+	CREATE INDEX ix_ReservedBeds
+		ON dbo.ReservedBeds (LogDate, MedicalCenterID, DepartmentID)
 
 

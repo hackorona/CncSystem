@@ -1,0 +1,11 @@
+INSERT INTO Users (
+		FirstName			
+		,LastName			
+		,IdentityNumber		
+		,UserName			
+		,PasswordHash		
+		,PasswordSalt		
+		,PasswordLastChange	
+		,Active						
+	)
+values 'aaa', 'bbb', '42342', 'aaa', '423efsfs', 'das423fsdawd', '2020-1-13', 1

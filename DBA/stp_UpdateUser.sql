@@ -5,6 +5,8 @@ GO
 
 /* Version 1.0.0 - OhadP 01/04/2020 Initial Version */
 /* Version 1.0.1 - OhadP 02/04/2020 MedicalCenterID and OrganizationID were added to @in_json */
+/* Version 1.0.2 - OhadO 04/04/2020 fix issue with OrganizationID */
+/* Version 1.0.3 - OhadP 04/04/2020 add SELECT @out_json, default was added to @out_json and it's not required */
 
 /*
 @in_json format:	
@@ -29,6 +31,8 @@ errorno values:
 	1012 - user id not exists on dbo.Users table
 	1013 - first Name/last Name should not be empty
 	1014 - identity number should not be empty
+	1016 - medical center id not exists on dbo.MedicalCenters table
+	1017 - organization id not exists on combo data
 
 
 Remark: this procedure will not change the user password
@@ -37,7 +41,7 @@ Remark: changing user name is not possible
 
 CREATE PROCEDURE dbo.stp_UpdateUser 
 		@in_json	NVARCHAR(max),
-		@out_json	NVARCHAR(max) OUTPUT
+		@out_json	NVARCHAR(max) = NULL OUTPUT
 
 AS
 BEGIN
@@ -101,15 +105,17 @@ BEGIN
 	   NOT EXISTS (	SELECT	1
 					FROM	dbo.MedicalCenters
 					WHERE	MedicalCenterID = @MedicalCenterID)
-		-- media center id not exists on dbo.MedicalCenters table
+		-- medical center id not exists on dbo.MedicalCenters table
 		SET @ErrorNo = 1016
 
-	-- no medical center associate with this user
-	IF @MedicalCenterID = 0 
-	BEGIN
-		SET @MedicalCenterID = NULL
-		SET @OrganizationID = NULL
-	END
+	IF @ErrorNo = 0 AND 
+	   @OrganizationID > 0 AND
+	   NOT EXISTS (	SELECT	 1
+					FROM	ComboData 
+					WHERE	ComboDataDescription	= 'Organization'
+					AND		ComboDataID				= @OrganizationID)
+		-- organization id not exists on combo data
+		SET @ErrorNo = 1017
 
 	/********************************************************************************************************************/
 
@@ -135,5 +141,7 @@ BEGIN
 	/********************************************************************************************************************/
 
 	SET @out_json = '{ "userid": "' + ISNULL (CONVERT (nvarchar(30), @UserID), 'null') + '", "errorno": "' + ISNULL (CONVERT (nvarchar(30), @ErrorNo), 'null') + '" }'
+
+	SELECT	@out_json
 
 END

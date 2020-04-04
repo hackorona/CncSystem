@@ -4,6 +4,7 @@ IF OBJECT_ID (N'dbo.stp_UserNameExists', N'P') IS NOT NULL
 GO
 
 /* Version 1.0.0 - OhadP 01/04/2020 Initial Version */
+/* Version 1.0.1 - OhadP 04/04/2020 add SELECT @out_json, default was added to @out_json and it's not required */
 
 /*
 @in_json format:	
@@ -23,7 +24,7 @@ errorno values:
 
 CREATE PROCEDURE dbo.stp_UserNameExists 
 		@in_json	NVARCHAR(max),
-		@out_json	NVARCHAR(max) OUTPUT
+		@out_json	NVARCHAR(max) = NULL OUTPUT
 
 AS
 BEGIN
@@ -60,4 +61,5 @@ BEGIN
 
 	SET @out_json = '{ "userid": "' + ISNULL (CONVERT (nvarchar(30), @UserID), 'null') + '", "errorno": "' + ISNULL (CONVERT (nvarchar(30), @ErrorNo), 'null') + '" }'
 
+	SELECT	@out_json
 END

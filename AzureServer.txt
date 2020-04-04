@@ -1,3 +1,19 @@
-Server: 			coronacaresrv
-Server full name: 		coronacaresrv.database.windows.net
-Server admin login: 	coronacaregroup
+https://cp.makeapp.co.il:2083/
+
+
++===================================+
+| New Account Info                  |
++===================================+
+| Domain: coronacare.makeapp.co.il
+| Ip: 185.37.151.2 (n)
+| UserName: coronacare
+| PassWord: AijT?ut-g~OQ
+| Quota: 1 GB
+| NameServer1: ns1.makeapp.co.il
+| NameServer2: ns2.makeapp.co.il
+| Contact Email: ohadpick@gmail.com
+| Package: 1gb
++===================================+
+
+
+//185.37.151.2:3306/coronaca_coronacare

@@ -5,6 +5,7 @@ GO
 
 /* Version 1.0.0 - OhadP 01/04/2020 Initial Version */
 /* Version 1.0.1 - OhadP 02/04/2020 MedicalCenterID and OrganizationID were added to @out_json */
+/* Version 1.0.2 - OhadP 04/04/2020 add SELECT @out_json, default was added to @out_json and it's not required */
 
 /*
 
@@ -27,7 +28,7 @@ errorno values:
 */
 
 CREATE PROCEDURE dbo.stp_GetUsers 
-		@out_json	NVARCHAR(max) OUTPUT
+		@out_json	NVARCHAR(max) = NULL OUTPUT
 
 AS
 BEGIN
@@ -48,5 +49,7 @@ BEGIN
 		FROM dbo.Users  
 		FOR JSON AUTO
 	)
+
+	SELECT	@out_json
 
 END

@@ -72,3 +72,15 @@ IF COL_LENGTH('dbo.MedicalCentersNumOfPatients','isER') IS NULL
 IF COL_LENGTH('dbo.MedicalCentersNumOfPatients','BreadingMachines') IS NULL
 	ALTER TABLE dbo.MedicalCentersNumOfPatients
 		ADD	BreadingMachines	int		NULL
+
+/************************************************************************************************************************/
+/* dbo.Patients and dbo.PatientsLog are not in use																		*/
+/************************************************************************************************************************/
+
+IF OBJECT_ID (N'dbo.PatientsLog', N'U') IS NOT NULL
+	DROP TABLE dbo.PatientsLog
+
+IF OBJECT_ID (N'dbo.Patients', N'U') IS NOT NULL
+	DROP TABLE dbo.Patients
+
+/************************************************************************************************************************/

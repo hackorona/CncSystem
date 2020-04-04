@@ -30,7 +30,7 @@ const App = () => {
             <Route path="/login">
               <Login onLogin={onLogin}/>
             </Route>
-            <Route path="/report">
+            <Route path="/dashboard">
               <MainDashboard store={store}/>
             </Route>
           </Switch>

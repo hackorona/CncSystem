@@ -6,16 +6,17 @@ import {
 } from "react-router-dom";
 import { TopBar } from '../components/TopBar';
 import { Report } from '../components/report/Report';
+import { Recommendation } from '../components/recommendation/Recommendation';
 
 
 const styles = {
   container: {
     height: '100%',
-    background: '#FBFBFB'
   },
   page: {
     height: '100%',
-    margin: '45px 50px 0 50px',
+    background: '#FBFBFB',
+    padding: '45px 50px 0 50px',
     minHeight: 500,
     paddingBottom: 60,
   }
@@ -28,8 +29,11 @@ export const MainDashboard = ({ store }) => {
       <TopBar currentUser={store.main.currentUser} />
       <div style={styles.page}>
         <Switch>
-          <Route path={`${match.path}/:medicalCenterId`}>
+          <Route path={`${match.path}/report/:medicalCenterId`}>
             <Report medicalCenter={store.main.entity} />
+          </Route>
+          <Route path={`${match.path}/recommendation`}>
+            <Recommendation medicalCenter={store.main.entity} />
           </Route>
         </Switch>
       </div>

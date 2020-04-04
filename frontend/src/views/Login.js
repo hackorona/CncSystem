@@ -68,6 +68,8 @@ const styles = {
 
 export const Login = ({ onLogin }) => {
   const theme = useTheme();
+  const [username, setUsername] = React.useState();
+  const [password, setPassword] = React.useState();
 
   return (
     <div style={styles.container}>
@@ -82,13 +84,19 @@ export const Login = ({ onLogin }) => {
                 {he.login.titleMain}
             </span> {he.login.titleSub}
           </Typography>
-          <StyledInput label={he.login.username}/>
           <StyledInput
+            label={he.login.username}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <StyledInput
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             label={he.login.password}
             type="password"
           />
           <StyledButton
-            onClick={onLogin}
+            onClick={() => onLogin(username, password)}
             style={styles.button}>
             {he.login.submit}
           </StyledButton>

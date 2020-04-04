@@ -1,4 +1,4 @@
--- Last Change 02/04/2020
+-- Last Change 04/04/2020
 
 DECLARE @out_json NVARCHAR(max)
 
@@ -49,4 +49,3 @@ select @out_json out_json
 
 
 /**************************************************************************/
-

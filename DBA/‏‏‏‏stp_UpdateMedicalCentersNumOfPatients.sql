@@ -6,6 +6,7 @@ GO
 /* Version 1.0.0 - OhadP 02/04/2020 Initial Version */
 /* Version 1.0.1 - OhadP 03/04/2020 Adds isER and BreadingMachines to dbo.MedicalCentersNumOfPatients table */
 /* Version 1.0.2 - OhadP 04/04/2020 add SELECT @out_json, default was added to @out_json and it's not required */
+/* Version 1.0.3 - OhadP 04/04/2020 BreadingMachines column changed to VentilationMachines column */
 
 /*
 @in_json format:	
@@ -16,7 +17,7 @@ GO
 		"availablebeds": "100",
 		"occupiedbeds": "76",
 		"iser": 0,
-		"breadingmachines": 5
+		"ventilationmachines": 5
 	}
 
 @out_json format:
@@ -44,13 +45,13 @@ BEGIN
 
 	-- gets data from json string
 
-	DECLARE @MedicalCenterID	int 
-	DECLARE @DepartmentID		int
-	DECLARE @Severity			int
-	DECLARE @AvailableBeds		int
-	DECLARE @OccupiedBeds		int
-	DECLARE @isER				tinyint
-	DECLARE @BreadingMachines	int
+	DECLARE @MedicalCenterID		int 
+	DECLARE @DepartmentID			int
+	DECLARE @Severity				int
+	DECLARE @AvailableBeds			int
+	DECLARE @OccupiedBeds			int
+	DECLARE @isER					tinyint
+	DECLARE @VentilationMachines	int
 
 	SELECT	@MedicalCenterID		= MedicalCenterID,
 			@DepartmentID			= DepartmentID,
@@ -58,7 +59,7 @@ BEGIN
 			@AvailableBeds			= AvailableBeds,
 			@OccupiedBeds			= OccupiedBeds,
 			@isER					= isER,
-			@BreadingMachines		= BreadingMachines
+			@VentilationMachines	= VentilationMachines
 	FROM	OPENJSON(@in_json)
 	WITH (
 			MedicalCenterID			int			'$.medicalcenterid',
@@ -67,7 +68,7 @@ BEGIN
 			AvailableBeds			int			'$.availablebeds',
 			OccupiedBeds			int			'$.occupiedbeds',
 			isER					tinyint		'$.iser',
-			BreadingMachines		int			'$.breadingmachines'
+			VentilationMachines		int			'$.ventilationmachines'
 	) AS jsonValues
 	
 	/********************************************************************************************************************/
@@ -101,7 +102,7 @@ BEGIN
 						OccupiedBeds			= @OccupiedBeds,
 						UpdateDate				= getdate(),
 						isER					= @isER,
-						BreadingMachines		= @BreadingMachines
+						VentilationMachines		= @VentilationMachines
 				WHERE	MedicalCenterID			= @MedicalCenterID
 				AND		DepartmentID			= @DepartmentID
 				AND		Severity				= @Severity
@@ -116,14 +117,14 @@ BEGIN
 							AvailableBeds,
 							OccupiedBeds,
 							isER,
-							BreadingMachines)
+							VentilationMachines)
 					SELECT	@MedicalCenterID,
 							@DepartmentID,
 							@Severity,
 							@AvailableBeds,
 							@OccupiedBeds,
 							@isER,
-							@BreadingMachines
+							@VentilationMachines
 			END
 
 		END TRY

@@ -1,4 +1,4 @@
--- Last Change 02/04/2020
+-- Last Change 04/04/2020
 
 DECLARE @out_json NVARCHAR(max)
 
@@ -9,7 +9,8 @@ SET @json = '{
 				"street": "ויצמן",
 				"streetnumber": "6",
 				"city": "תל אביב יפו",
-				"geolocation":"31.4062525,35.0818155"
+				"geolocation":"31.4062525,35.0818155",
+				"medicalcenterstype": "1"
 			}'
 /*
 SET @json = '{
@@ -17,9 +18,23 @@ SET @json = '{
 				"street": "דברי חיים",
 				"streetnumber": "16",
 				"city": "נתניה",
-				"geolocation":""
+				"geolocation":"",
+				"medicalcenterstype": "1"
 			}'
 */
+/*
+SET @json = '{
+				"medicalcenterdescription": "דן פנורמה תל אביב",
+				"street": "פרופסור יחזקאל קויפמן",
+				"streetnumber": "10",
+				"city": "תל אביב יפו",
+				"geolocation":"",
+				"medicalcenterstype": "2"
+			}'
+*/
+
+
+
 EXEC dbo.stp_AddMedicalCenter 
 		@in_json	= @json,
 		@out_json	= @out_json OUTPUT

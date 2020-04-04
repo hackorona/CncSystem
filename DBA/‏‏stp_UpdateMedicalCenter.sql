@@ -6,6 +6,7 @@ GO
 /* Version 1.0.0 - OhadP 02/04/2020 Initial Version */
 /* Version 1.0.1 - OhadP 02/04/2020 GeoLocation was added */
 /* Version 1.0.2 - OhadP 04/04/2020 add SELECT @out_json, default was added to @out_json and it's not required */
+/* Version 1.0.3 - OhadP 04/04/2020 add MedicalCentersType column */
 
 /*
 @in_json format:	
@@ -16,7 +17,8 @@ GO
 		"streetnumber": "6",
 		"city": "תל אביב יפו",
 		"active": "1",
-		"geolocation": "31.4062525,35.0818155"
+		"geolocation": "31.4062525,35.0818155",
+		"medicalcenterstype": "1"
 	}
 
 @out_json format:
@@ -29,6 +31,7 @@ errorno values:
 	2001 - general error, cannot inserts row to dbo.MedicalCenters table
 	2010 - medical center description or street or city should not be empty
 	2011 - medical center id not exists on dbo.MedicalCenters table
+	2013 - medical centers type not exists in combo data
 */
 
 CREATE PROCEDURE dbo.stp_UpdateMedicalCenter 
@@ -52,6 +55,7 @@ BEGIN
 	DECLARE @City						nvarchar(100)
 	DECLARE @Active						tinyint
 	DECLARE @GeoLocation				nvarchar(200)
+	DECLARE @MedicalCentersType			tinyint
 
 	SELECT	@MedicalCenterID			= MedicalCenterID,
 			@MedicalCenterDescription	= MedicalCenterDescription,
@@ -59,7 +63,8 @@ BEGIN
 			@StreetNumber				= StreetNumber,
 			@City						= City,
 			@Active						= Active,
-			@GeoLocation				= GeoLocation
+			@GeoLocation				= GeoLocation,
+			@MedicalCentersType			= MedicalCentersType
 	FROM	OPENJSON(@in_json)
 	WITH (
 			MedicalCenterID				int					'$.medicalcenterid',
@@ -68,7 +73,8 @@ BEGIN
 			StreetNumber				nvarchar(20)		'$.streetnumber',
 			City						nvarchar(100)		'$.city',
 			Active						tinyint				'$.active',
-			GeoLocation					nvarchar(200)		'$.geolocation'
+			GeoLocation					nvarchar(200)		'$.geolocation',
+			MedicalCentersType			tinyint				'$.medicalcenterstype'
 	) AS jsonValues
 	
 	/********************************************************************************************************************/
@@ -87,6 +93,15 @@ BEGIN
 		-- medical center description or street or city should not be empty
 		SET @ErrorNo = 2010
 
+	IF @ErrorNo = 0 AND
+		@MedicalCentersType > 0 AND
+		NOT EXISTS (SELECT	1
+					FROM	dbo.ComboData
+					WHERE	ComboDataDescription = 'MedicalCentersType'
+					AND		ComboDataID			 = 	@MedicalCentersType)
+		-- medical centers type not exists in combo data
+		SET @ErrorNo = 2013
+
 	/********************************************************************************************************************/
 
 	IF @ErrorNo = 0
@@ -99,7 +114,8 @@ BEGIN
 					City						= @City,
 					UpdateDate					= getdate(),
 					Active						= ISNULL (@Active, Active),
-					GeoLocation					= @GeoLocation
+					GeoLocation					= @GeoLocation,
+					MedicalCentersType			= @MedicalCentersType
 			WHERE	MedicalCenterID				= @MedicalCenterID
 		END TRY
 		BEGIN CATCH

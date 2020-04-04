@@ -9,8 +9,8 @@
 1013 - first Name/last Name should not be empty
 1014 - identity number should not be empty
 1015 - password hash/password salt should not be empty
-1016 - media center id not exists on dbo.MedicalCenters table
-
+1016 - medical center id not exists on dbo.MedicalCenters table
+1017 - organization id not exists on combo data
 
 
 2000 - general error, cannot inserts row to dbo.MedicalCenters table
@@ -21,7 +21,7 @@
 2010 - medical center description or street or city should not be empty
 2011 - medical center id not exists on dbo.MedicalCenters table
 2012 - medical center description already exists on dbo.MedicalCenters table
-
+2013 - medical centers type not exists in combo data
 
 
 3000 - general error, cannot inserts/updates row to MedicalCentersNumOfPatientstable

@@ -1,4 +1,4 @@
--- Last Change 02/04/2020
+-- Last Change 04/04/2020
 
 DECLARE @out_json NVARCHAR(max)
 
@@ -11,7 +11,8 @@ SET @json = '{
 				"identitynumber": "365546512",
 				"active": 0,
 				"medicalcenterid": "",
-				"organizationid": ""
+				"organizationid": "",
+				"userrole": "Doctor"
 			}'
 /*
 SET @json = '{
@@ -21,7 +22,8 @@ SET @json = '{
 				"identitynumber": "365546512",
 				"active": 1,
 				"medicalcenterid": "",
-				"organizationid": ""
+				"organizationid": "",
+				"userrole": "Doctor"
 			}'
 */
 EXEC dbo.stp_UpdateUser 

@@ -31,10 +31,7 @@ GO
 	}
 
 errorno values:
-	1000 - general error, cannot inserts row to dbo.Users table
-	1010 - user name already exists on dbo.Users table
-	1011 - identity number already exists on dbo.Users table (cannot assign sqme identity number to two users)
-	1016 - media center id not exists on dbo.MedicalCenters table
+	5010 - combo data description does not exists on dbo.ComboData table
 */
 
 CREATE PROCEDURE dbo.stp_GetComboData 
@@ -47,40 +44,19 @@ BEGIN
 	/********************************************************************************************************************/
 	
 	-- local parameters
-	DECLARE @UserID				int = NULL
 	DECLARE @ErrorNo			int = 0
 
 	-- gets data from json string
 
-	DECLARE @FirstName			nvarchar(200)
-	DECLARE @LastName			nvarchar(200)
-	DECLARE @IdentityNumber		nvarchar(40)
-	DECLARE @UserName			nvarchar(200)
-	DECLARE @PasswordHash		nvarchar(400)
-	DECLARE @PasswordSalt		nvarchar(400)
-	DECLARE @MedicalCenterID	int
-	DECLARE @OrganizationID		int
-
-
-	SELECT	@FirstName			= FirstName,
-			@LastName			= LastName,
-			@IdentityNumber		= IdentityNumber,
-			@UserName			= UserName,
-			@PasswordHash		= PasswordHash,
-			@PasswordSalt		= PasswordSalt,
-			@MedicalCenterID	= MedicalCenterID,
-			@OrganizationID		= OrganizationID
+	DECLARE @ComboDataDescription		nvarchar(100)
+	DECLARE @LanguageID					smallint
+	
+	SELECT	@ComboDataDescription	= LOWER (ComboDataDescription),
+			@LanguageID				= LanguageID
 	FROM	OPENJSON(@in_json)
 	WITH (
-			UserID				int					'$.userid',
-			FirstName			nvarchar(200)		'$.firstname',
-			LastName			nvarchar(200)		'$.lastname',
-			IdentityNumber		nvarchar(40)		'$.identitynumber',
-			UserName			nvarchar(200)		'$.username',
-			PasswordHash		nvarchar(400)		'$.passwordhash',
-			PasswordSalt		nvarchar(400)		'$.passwordsalt',
-			MedicalCenterID		int					'$.medicalcenterid',
-			OrganizationID		int					'$.organizationid'
+			ComboDataDescription	nvarchar(100)	'$.combodatadescription',
+			LanguageID				smallint		'$.languageid'
 	) AS jsonValues
 	
 	/********************************************************************************************************************/
@@ -89,72 +65,35 @@ BEGIN
 	IF @ErrorNo IS NULL
 		SET @ErrorNo = 0
 
-	IF EXISTS (	SELECT	1
-				FROM	dbo.Users
-				WHERE	UserName = @UserName)
-		-- user name already exists on dbo.Users table
-		SET @ErrorNo = 1010
-
-	IF @ErrorNo = 0 AND
-	   EXISTS (	SELECT	1
-				FROM	dbo.Users
-				WHERE	IdentityNumber = @IdentityNumber)
-		-- identity number already exists on dbo.Users table (cannot assign sqme identity number to two users)
-		SET @ErrorNo = 1011
-
-	IF @ErrorNo = 0 AND
-	   @MedicalCenterID > 0 AND	
-	   NOT EXISTS (	SELECT	1
-					FROM	dbo.MedicalCenters
-					WHERE	MedicalCenterID = @MedicalCenterID)
-		-- media center id not exists on dbo.MedicalCenters table
-		SET @ErrorNo = 1016
-
-	-- no medical center associate with this user
-	IF @MedicalCenterID = 0 
-	BEGIN
-		SET @MedicalCenterID = NULL
-		SET @OrganizationID = NULL
-	END
+	IF NOT EXISTS (	SELECT	1
+					FROM	dbo.ComboData
+					WHERE	LOWER (ComboDataDescription)	= @ComboDataDescription)
+		-- combo data description does not exists on dbo.ComboData table
+		SET @ErrorNo = 5010
 
 	/********************************************************************************************************************/
 
 	IF @ErrorNo = 0
 	BEGIN
-		BEGIN TRY
-			INSERT INTO dbo.Users (
-						FirstName,
-						LastName,
-						IdentityNumber,
-						UserName,
-						PasswordHash,
-						PasswordSalt,
-						PasswordLastChange,
-						Active,
-						MedicalCenterID,
-						OrganizationID)
-				SELECT	@FirstName,
-						@LastName,
-						@IdentityNumber,
-						@UserName,
-						CAST (@PasswordHash as varbinary(400)),
-						CAST (@PasswordSalt as varbinary(400)),
-						getdate(),
-						1,
-						@MedicalCenterID,
-						@OrganizationID
-
-			SET @UserID = SCOPE_IDENTITY()
-		END TRY
-		BEGIN CATCH
-			-- general error, cannot inserts row to dbo.Users table
-			SET @ErrorNo = 1000
-		END CATCH
-	END		-- IF @ErrorNo = 0
+		SET @out_json = (
+			SELECT	ComboDataID			combodataid,
+					String				string
+			FROM	(
+					SELECT	D.ComboDataID			combodataid,
+							S.String				string
+					FROM	dbo.ComboData D INNER JOIN Strings S
+					ON		D.StringID				= S.StringID
+					WHERE	LOWER (ComboDataDescription)	= @ComboDataDescription
+					AND		S.LanguageID					= @LanguageID
+			) A
+			FOR JSON AUTO
+		) 
+	END
 
 	/********************************************************************************************************************/
 
-	SET @out_json = '{ "userid": "' + ISNULL (CONVERT (nvarchar(30), @UserID), 'null') + '", "errorno": "' + ISNULL (CONVERT (nvarchar(30), @ErrorNo), 'null') + '" }'
+	IF @out_json IS NULL
+		SET @out_json = '{ "errorno": "' + ISNULL (CONVERT (nvarchar(30), @ErrorNo), 'null') + '" }'
 
 	SELECT	@out_json
 

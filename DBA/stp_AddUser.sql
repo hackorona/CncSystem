@@ -7,6 +7,7 @@ GO
 /* Version 1.0.1 - OhadP 01/04/2020 Minor changes, fix errono details */
 /* Version 1.0.2 - OhadP 02/04/2020 MedicalCenterID and OrganizationID were added to @in_json */
 /* Version 1.0.3 - OhadP 04/04/2020 add SELECT @out_json, default was added to @out_json and it's not required */
+/* Version 1.0.4 - OhadP 04/04/2020 add UserRole column */
 
 /*
 @in_json format:	
@@ -18,7 +19,8 @@ GO
 		"passwordhash": "hjjkhwkrhwrkwnfsd3424233fs9ferwlmlf",
 		"passwordsalt": "srwlkfsd094sfs4342lfds",
 		"medicalcenterid": "",
-		"organizationid": ""
+		"organizationid": "",
+		"userrole": "Doctor"
 	}
 
 @out_json format:
@@ -58,7 +60,7 @@ BEGIN
 	DECLARE @PasswordSalt		nvarchar(400)
 	DECLARE @MedicalCenterID	int
 	DECLARE @OrganizationID		int
-
+	DECLARE @UserRole			nvarchar(100)
 
 	SELECT	@FirstName			= FirstName,
 			@LastName			= LastName,
@@ -67,7 +69,8 @@ BEGIN
 			@PasswordHash		= PasswordHash,
 			@PasswordSalt		= PasswordSalt,
 			@MedicalCenterID	= MedicalCenterID,
-			@OrganizationID		= OrganizationID
+			@OrganizationID		= OrganizationID,
+			@UserRole			= UserRole
 	FROM	OPENJSON(@in_json)
 	WITH (
 			UserID				int					'$.userid',
@@ -78,7 +81,8 @@ BEGIN
 			PasswordHash		nvarchar(400)		'$.passwordhash',
 			PasswordSalt		nvarchar(400)		'$.passwordsalt',
 			MedicalCenterID		int					'$.medicalcenterid',
-			OrganizationID		int					'$.organizationid'
+			OrganizationID		int					'$.organizationid',
+			UserRole			nvarchar(100)		'$.userrole'
 	) AS jsonValues
 	
 	/********************************************************************************************************************/
@@ -132,7 +136,8 @@ BEGIN
 						PasswordLastChange,
 						Active,
 						MedicalCenterID,
-						OrganizationID)
+						OrganizationID,
+						UserRole)
 				SELECT	@FirstName,
 						@LastName,
 						@IdentityNumber,
@@ -142,7 +147,8 @@ BEGIN
 						getdate(),
 						1,
 						@MedicalCenterID,
-						@OrganizationID
+						@OrganizationID,
+						@UserRole
 
 			SET @UserID = SCOPE_IDENTITY()
 		END TRY

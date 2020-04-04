@@ -18,7 +18,7 @@ const styles = {
 };
 
 export const Box = (props) => (
-  <div css={styles.box}>
+  <div css={styles.box} {...props}>
     {props.title &&
       <div css={styles.title}>
         <Typography variant='h6'>{props.title}</Typography>

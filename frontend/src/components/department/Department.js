@@ -2,14 +2,9 @@
 import React from 'react';
 import { TextField, Typography, FormGroup } from '@material-ui/core';
 import { jsx } from '@emotion/core'
+import { Box } from '../Box';
 
 const styles = {
-  department: {
-    background: '#fff',
-    border: '1px solid #B0B4B3',
-    borderRadius: 3,
-    marginBottom: 32,
-  },
   title: {
     background: '#F5F6F8',
     fontWeight: 600,
@@ -77,11 +72,10 @@ export const Department = ({ department }) => {
     labels: VENTILATOR_LABELS,
   }];
 
+  const titleStart = 'מחלקה מספר';
+
   return (
-    <div css={styles.department}>
-      <div css={styles.title}>
-        <Typography variant='h6'> מחלקה מספר {id} - {name}</Typography>
-      </div>
+    <Box title={`${titleStart} ${id} - ${name}`}>
       <div css={styles.inner}>
         {
           displayData.map(column => {
@@ -111,6 +105,6 @@ export const Department = ({ department }) => {
           })
         }
       </div>
-    </div>
+    </Box>
   )
 };

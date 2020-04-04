@@ -3,7 +3,7 @@ import React from 'react';
 import { Typography } from '@material-ui/core';
 import { jsx } from '@emotion/core'
 import { StyledButton } from '../StyledButton';
-import { Department } from '../department/Department';
+import { Department } from './department/Department';
 
 const styles = {
   container: {

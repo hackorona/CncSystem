@@ -7,7 +7,7 @@ import {
 import { TopBar } from '../components/TopBar';
 import { Report } from '../components/report/Report';
 import { Recommendation } from '../components/recommendation/Recommendation';
-
+import { Admin } from '../components/admin/Admin';
 
 const styles = {
   container: {
@@ -24,6 +24,7 @@ const styles = {
 
 export const MainDashboard = ({ store }) => {
   let match = useRouteMatch();
+  console.log(store)
   return (
     <div style={styles.container}>
       <TopBar currentUser={store.main.currentUser} />
@@ -34,6 +35,9 @@ export const MainDashboard = ({ store }) => {
           </Route>
           <Route path={`${match.path}/recommendation`}>
             <Recommendation medicalCenter={store.main.entity} />
+          </Route>
+          <Route path={`${match.path}/admin/medical-centers`}>
+            <Admin medicalCenters={store.admin.medicalCanters} />
           </Route>
         </Switch>
       </div>

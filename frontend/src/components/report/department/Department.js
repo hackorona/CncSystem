@@ -2,7 +2,7 @@
 import React from 'react';
 import { TextField, Typography, FormGroup } from '@material-ui/core';
 import { jsx } from '@emotion/core'
-import { Box } from '../Box';
+import { Box } from '../../Box';
 
 const styles = {
   title: {

@@ -27,3 +27,4 @@
 3000 - general error, cannot inserts/updates row to MedicalCentersNumOfPatientstable
 
 4000 - general error, cannot inserts row to dbo.MedicalCentersPatients table
+

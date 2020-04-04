@@ -11,11 +11,13 @@ import { Report } from '../components/report/Report';
 const styles = {
   container: {
     height: '100%',
-    background: '#E5E5E5'
+    background: '#FBFBFB'
   },
   page: {
+    height: '100%',
     margin: '45px 50px 0 50px',
     minHeight: 500,
+    paddingBottom: 60,
   }
 };
 

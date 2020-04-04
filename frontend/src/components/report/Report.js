@@ -3,10 +3,18 @@ import React from 'react';
 import { Typography } from '@material-ui/core';
 import { jsx } from '@emotion/core'
 import { StyledButton } from '../StyledButton';
+import { Department } from '../department/Department';
 
 const styles = {
-  department: {
-    background: '#fff'
+  container: {
+    height: '100%',
+  },
+  buttonContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  button: {
+    width: 360,
   }
 };
 
@@ -17,7 +25,7 @@ export const Report = ({ medicalCenter, onReportSubmit }) => {
     departments
   } = medicalCenter;
   return (
-    <div>
+    <div css={styles.container}>
       <Typography>דוח יומי:</Typography>
       <Typography>
         {id}
@@ -25,14 +33,14 @@ export const Report = ({ medicalCenter, onReportSubmit }) => {
       </Typography>
       {
         departments.map(department => (
-          <div css={styles.department} key={department.id}>
-            {department.id} {department.name}
-          </div>
+          <Department key={department.id} department={department}/>
         ))
       }
-      <StyledButton onClick={onReportSubmit}>
-        שליחת דוח
-      </StyledButton>
+      <div css={styles.buttonContainer}>
+        <StyledButton onClick={onReportSubmit} css={styles.button}>
+          שליחת דוח
+        </StyledButton>
+      </div>
     </div>
   )
 };

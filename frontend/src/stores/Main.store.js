@@ -17,6 +17,14 @@ const medicalCenterStub = {
       stable: 3,
       serious: 4,
       critical: 5,
+    },
+    beds: {
+      all: 40,
+      used: 25,
+    },
+    ventilators: {
+      all: 40,
+      used: 25,
     }
   }, {
     id: '02',
@@ -25,6 +33,14 @@ const medicalCenterStub = {
       stable: 3,
       serious: 4,
       critical: 5,
+    },
+    beds: {
+      all: 40,
+      used: 25,
+    },
+    ventilators: {
+      all: 40,
+      used: 25,
     }
   }]
 };

@@ -6,8 +6,8 @@ import { jsx } from '@emotion/core'
 const styles = {
   button: {
     height: 67,
-    color: '#fff',
-    fontSize: 23,
+    color: '#fff !important',
+    fontSize: '23px !important',
     fontWeight: 'bold',
     letterSpacing: '0.03em',
     boxShadow: '0px 0px 11px rgba(33, 197, 170, 0.4)',

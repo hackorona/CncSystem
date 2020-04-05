@@ -1,6 +1,6 @@
 import { observable, action, computed } from 'mobx';
 import MedicalCenter from './MedicalCenter.store';
-import { medicalCenterStub, userStub } from '../consts/stubs';
+import { medicalCenterStub3, userStub } from '../consts/stubs';
 import cnc from '../services/cnc';
 
 export default class Main {
@@ -19,7 +19,7 @@ export default class Main {
   init (rootStore) {
     this.rootStore = rootStore;
     if (this.currentUser) {
-      this.entity = new MedicalCenter(medicalCenterStub);
+      this.entity = new MedicalCenter(medicalCenterStub3);
     }
     return this;
   }
@@ -30,7 +30,7 @@ export default class Main {
     // Mock to allow login flow
     this.isLoggedIn = true;
     this.currentUser = userStub;
-    this.entity = new MedicalCenter(medicalCenterStub);
+    this.entity = new MedicalCenter(medicalCenterStub3);
   };
 
   @action getRecommendation = () => {
@@ -43,8 +43,8 @@ export default class Main {
           address: 'רחוב זאב ז׳בוטינסקי 39, פתח תקווה'
         },
         {
-          name: 'מרכז רפואי רבין - בילינסון',
-          address: 'רחוב זאב ז׳בוטינסקי 39, פתח תקווה'
+          name: 'מרכז רפואי מעיני הישועה',
+          address: 'רחוב הרב פוברסקי 17, בני ברק'
         }
       ]
     }, 1500);

@@ -1,5 +1,5 @@
 import { observable, action, computed } from 'mobx';
-import { medicalCenterListStub, medicalCenterStub } from '../consts/stubs';
+import { medicalCenterListStub } from '../consts/stubs';
 import MedicalCenter from './MedicalCenter.store';
 
 export default class Admin {

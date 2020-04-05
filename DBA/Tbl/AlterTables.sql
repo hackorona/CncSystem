@@ -1,3 +1,5 @@
+DECLARE @SQL nvarchar(4000)
+
 IF COL_LENGTH('dbo.Users','MedicalCenterID') IS NULL
 	ALTER TABLE dbo.Users
 		ADD MedicalCenterID		int			NULL
@@ -104,4 +106,24 @@ IF COL_LENGTH('dbo.Users','UserRole') IS NULL
 IF COL_LENGTH('dbo.ReservedBeds','VentilationMachines') IS NULL
 	ALTER TABLE dbo.ReservedBeds
 		ADD	VentilationMachines		tinyint		NOT NULL	DEFAULT (0)
+
+IF COL_LENGTH('dbo.MedicalCentersNumOfPatients','VentilationMachines') IS NOT NULL
+	ALTER TABLE dbo.MedicalCentersNumOfPatients
+		DROP COLUMN	VentilationMachines
+
+IF COL_LENGTH('dbo.MedicalCentersNumOfPatients','AvailableVentilationMachines') IS NULL
+	ALTER TABLE dbo.MedicalCentersNumOfPatients
+		ADD	AvailableVentilationMachines		int		NOT NULL	DEFAULT (0)
+
+IF COL_LENGTH('dbo.MedicalCentersNumOfPatients','OccupiedVentilationMachines') IS NULL
+	ALTER TABLE dbo.MedicalCentersNumOfPatients
+		ADD	OccupiedVentilationMachines			int		NOT NULL	DEFAULT (0)
+
+SET @SQL = '
+IF COL_LENGTH(''dbo.MedicalCentersNumOfPatients'',''VacantVentilationMachines'') IS NULL
+	ALTER TABLE dbo.MedicalCentersNumOfPatients
+		ADD	VacantVentilationMachines AS AvailableVentilationMachines - OccupiedVentilationMachines '
+
+EXEC sp_executesql @SQL
+
 

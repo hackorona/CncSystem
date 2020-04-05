@@ -7,6 +7,8 @@ GO
 /* Version 1.0.1 - OhadP 03/04/2020 Adds isER and BreadingMachines to @out_json format */
 /* Version 1.0.2 - OhadP 04/04/2020 add SELECT @out_json, default was added to @out_json and it's not required */
 /* Version 1.0.3 - OhadP 04/04/2020 BreadingMachines column changed to VentilationMachines column */
+/* Version 1.0.4 - OhadP 05/04/2020 VentilationMachines has removed
+									AvailableVentilationMachines, OccupiedVentilationMachines columns were added */
 
 /*
 @in_json format:	
@@ -26,8 +28,10 @@ GO
 		"vacantbeds": "35",
 		"insertdate": "2020-03-30T22:49:05.800",
 		"updatedate": "2020-03-30T22:49:05.800",
-		"iser": 0,
-		"ventilationmachines": 5
+		"iser": "0",
+		"availableventilationmachines": "5",
+		"occupiedventilationmachines": "4",
+		"vacantventilationmachines": "1"
 	}
 
 errorno values:
@@ -68,16 +72,18 @@ BEGIN
 	
 	SET @Sql = N'
 			SET @out_json = (
-				SELECT	MedicalCenterID			medicalcenterid,
-						DepartmentID			departmentid,
-						Severity				severity,
-						AvailableBeds			availablebeds,
-						OccupiedBeds			occupiedbeds,
-						VacantBeds				vacantbeds,
-						InsertDate				insertdate,
-						UpdateDate				updatedate,
-						isER					iser,
-						VentilationMachines		ventilationmachines
+				SELECT	MedicalCenterID						medicalcenterid,
+						DepartmentID						departmentid,
+						Severity							severity,
+						AvailableBeds						availablebeds,
+						OccupiedBeds						occupiedbeds,
+						VacantBeds							vacantbeds,
+						InsertDate							insertdate,
+						UpdateDate							updatedate,
+						isER								iser,
+						AvailableVentilationMachines		availableventilationmachines,
+						OccupiedVentilationMachines			occupiedventilationmachines,
+						VacantVentilationMachines			vacantventilationmachines
 				FROM	dbo.MedicalCentersNumOfPatients  
 				WHERE	1 = 1 ' + char(13)
 

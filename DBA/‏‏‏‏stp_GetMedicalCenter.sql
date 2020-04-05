@@ -8,6 +8,8 @@ GO
 /* Version 1.0.2 - OhadP 04/04/2020 add SELECT @out_json, default was added to @out_json and it's not required */
 /* Version 1.0.3 - Ohadp 04/04/2020 MedicalCentersType column was added, adds summarize data from MedicalCentersNumOfPatients table
 									for columns: AvailableBeds, OccupiedBeds, VacantBeds, VentilationMachines */
+/* Version 1.0.4 - OhadP 05/04/2020 VentilationMachines was removed
+									AvailableVentilationMachines, OccupiedVentilationMachines, VacantVentilationMachines were added */
 
 /*
 @in_json format:	
@@ -31,7 +33,9 @@ GO
 		"availablebeds": "240",
 		"occupiedbeds": "195",
 		"vacantbeds": "45",
-		"ventilationmachines": "32"
+		"availableventilationmachines": "25",
+		"occupiedventilationmachines": "18",
+		"vacantventilationmachines": "7"
 	}
 
 -- User not exists
@@ -80,20 +84,22 @@ BEGIN
 	/********************************************************************************************************************/
 
 	SET @out_json = (
-		SELECT	MedicalCenterID				medicalcenterid,
-				MedicalCenterDescription	medicalcenterdescription,
-				Street						street,
-				StreetNumber				streetnumber,
-				City						city,
-				InsertDate					insertdate,
-				UpdateDate					updatedate,
-				Active						active,
-				GeoLocation					geolocation,
-				MedicalCentersType			medicalcenterstype,
-				AvailableBeds				availablebeds,
-				OccupiedBeds				occupiedbeds,
-				VacantBeds					vacantbeds,
-				VentilationMachines			ventilationmachines
+		SELECT	MedicalCenterID					medicalcenterid,
+				MedicalCenterDescription		medicalcenterdescription,
+				Street							street,
+				StreetNumber					streetnumber,
+				City							city,
+				InsertDate						insertdate,
+				UpdateDate						updatedate,
+				Active							active,
+				GeoLocation						geolocation,
+				MedicalCentersType				medicalcenterstype,
+				AvailableBeds					availablebeds,
+				OccupiedBeds					occupiedbeds,
+				VacantBeds						vacantbeds,
+				AvailableVentilationMachines	availableventilationmachines,
+				OccupiedVentilationMachines		occupiedventilationmachines,
+				VacantVentilationMachines		vacantventilationmachines
 		FROM	(
 				SELECT	M.MedicalCenterID,
 						M.MedicalCenterDescription,
@@ -108,13 +114,17 @@ BEGIN
 						P.AvailableBeds,		
 						P.OccupiedBeds,			
 						P.VacantBeds,			
-						P.VentilationMachines		
+						P.AvailableVentilationMachines,
+						P.OccupiedVentilationMachines,
+						P.VacantVentilationMachines
 				FROM	dbo.MedicalCenters M LEFT JOIN (
-						SELECT	MedicalCenterID					MedicalCenterID,
-								SUM (AvailableBeds)				AvailableBeds,
-								SUM (OccupiedBeds)				OccupiedBeds,
-								SUM (VacantBeds)				VacantBeds,
-								SUM (VentilationMachines)		VentilationMachines
+						SELECT	MedicalCenterID							MedicalCenterID,
+								SUM (AvailableBeds)						AvailableBeds,
+								SUM (OccupiedBeds)						OccupiedBeds,
+								SUM (VacantBeds)						VacantBeds,
+								SUM (AvailableVentilationMachines)		AvailableVentilationMachines,
+								SUM (OccupiedVentilationMachines)		OccupiedVentilationMachines,
+								SUM (VacantVentilationMachines)			VacantVentilationMachines
 						FROM	dbo.MedicalCentersNumOfPatients
 						GROUP BY MedicalCenterID
 				) P

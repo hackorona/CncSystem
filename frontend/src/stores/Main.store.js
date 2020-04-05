@@ -6,6 +6,8 @@ import cnc from '../services/cnc';
 export default class Main {
   @observable isLoggedIn = false;
   @observable currentUser = userStub;
+  @observable patientRecommendation;
+  @observable loadingRecommendation = false;
   @observable entity;
 
   constructor (externalStore) {
@@ -29,5 +31,23 @@ export default class Main {
     this.isLoggedIn = true;
     this.currentUser = userStub;
     this.entity = new MedicalCenter(medicalCenterStub);
+  };
+
+  @action getRecommendation = () => {
+    this.loadingRecommendation = true;
+    setTimeout(() => {
+      this.loadingRecommendation = false;
+      this.patientRecommendation = [
+        {
+          name: 'מרכז רפואי רבין - בילינסון',
+          address: 'רחוב זאב ז׳בוטינסקי 39, פתח תקווה'
+        },
+        {
+          name: 'מרכז רפואי רבין - בילינסון',
+          address: 'רחוב זאב ז׳בוטינסקי 39, פתח תקווה'
+        }
+      ]
+    }, 1500);
+
   }
 }

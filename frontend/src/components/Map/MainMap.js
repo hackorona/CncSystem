@@ -41,7 +41,7 @@ export const MainMap = ({ locations }) => {
         return (
           <div style={styles.container}>
             <GoogleMapReact
-              bootstrapURLKeys={{ key: "AIzaSyDMr2XC0oWSFbjIYhQlr6sxLz7SmyGS-OA" }}
+              bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY }}
               defaultCenter={defaultProps.center}
               defaultZoom={defaultProps.zoom}
               distanceToMouse={distanceToMouse}

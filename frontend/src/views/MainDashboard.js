@@ -9,6 +9,7 @@ import { Report } from '../components/report/Report';
 import { Recommendation } from '../components/recommendation/Recommendation';
 import { Admin } from '../components/admin/Admin';
 import { Stats } from '../components/stats/Stats';
+import { Observer } from 'mobx-react';
 
 const styles = {
   container: {
@@ -26,24 +27,33 @@ const styles = {
 export const MainDashboard = ({ store }) => {
   let match = useRouteMatch();
   return (
-    <div style={styles.container}>
-      <TopBar currentUser={store.main.currentUser} />
-      <div style={styles.page}>
-        <Switch>
-          <Route path={`${match.path}/report/:medicalCenterId`}>
-            <Report medicalCenter={store.main.entity} />
-          </Route>
-          <Route path={`${match.path}/recommendation`}>
-            <Recommendation medicalCenter={store.main.entity} />
-          </Route>
-          <Route path={`${match.path}/admin/medical-centers`}>
-            <Admin medicalCenters={store.admin.medicalCanters} />
-          </Route>
-          <Route path={`${match.path}/stats`}>
-            <Stats medicalCenters={store.admin.medicalCanters}/>
-          </Route>
-        </Switch>
-      </div>
-    </div>
+    <Observer>
+      {() => {
+        return (
+          <div style={styles.container}>
+            <TopBar currentUser={store.main.currentUser} />
+            <div style={styles.page}>
+              <Switch>
+                <Route path={`${match.path}/report/:medicalCenterId`}>
+                  <Report medicalCenter={store.main.entity} />
+                </Route>
+                <Route path={`${match.path}/recommendation`}>
+                  <Recommendation
+                    loading={store.main.loadingRecommendation}
+                    recommendation={store.main.patientRecommendation}
+                    getRecommendation={store.main.getRecommendation} />
+                </Route>
+                <Route path={`${match.path}/admin/medical-centers`}>
+                  <Admin medicalCenters={store.admin.medicalCanters} />
+                </Route>
+                <Route path={`${match.path}/stats`}>
+                  <Stats medicalCenters={store.admin.medicalCanters}/>
+                </Route>
+              </Switch>
+            </div>
+          </div>
+        )
+      }}
+    </Observer>
   )
 };

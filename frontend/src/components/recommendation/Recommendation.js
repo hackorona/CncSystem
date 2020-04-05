@@ -1,10 +1,11 @@
 /** @jsx jsx */
 import React from 'react';
-import { FormGroup, FormControlLabel, RadioGroup, Radio, TextField, Typography, } from '@material-ui/core';
+import { FormGroup, FormControlLabel, RadioGroup, Radio, TextField, Typography, CircularProgress } from '@material-ui/core';
 import { LocationOn } from '@material-ui/icons'
 import { jsx } from '@emotion/core'
 import { Box } from '../Box';
 import { StyledButton } from '../StyledButton';
+import { PlacesAutocomplete } from './Autocomplete';
 
 const styles = {
   container: {
@@ -14,7 +15,7 @@ const styles = {
     display: 'flex',
   },
   details: {
-    flex: '1 1 50%',
+    flex: '0 0 50%',
     marginBottom: 0,
   },
   subtitle: {
@@ -83,7 +84,7 @@ const styles = {
   }
 };
 
-export const Recommendation = () => {
+export const Recommendation = ({ recommendation, loading, getRecommendation }) => {
   return (
     <div css={styles.container}>
       <Typography variant='h5' css={styles.title}>
@@ -107,13 +108,9 @@ export const Recommendation = () => {
             </FormGroup>
             <FormGroup row css={styles.row}>
               <Typography css={styles.label}>
-              עיר מגורים
+             כתובת
               </Typography>
-              <TextField
-                variant='outlined'
-                size='small'
-                css={styles.input}
-              />
+              <PlacesAutocomplete onSelect={(e) => console.log(e)}/>
             </FormGroup>
             <FormGroup row css={styles.row}>
               <Typography css={styles.label}>
@@ -158,32 +155,36 @@ export const Recommendation = () => {
             </FormGroup>
 
             <div css={styles.buttonContainer}>
-              <StyledButton css={styles.button}>
+              <StyledButton css={styles.button} onClick={getRecommendation}>
                 קבלת המלצה
               </StyledButton>
             </div>
           </div>
         </Box>
-        <div css={styles.location}>
-          <div css={styles.locationBox}>
-            <div css={styles.icon}>
-              <LocationOn htmlColor='#fff' />
-            </div>
-            <Typography variant='h5' css={styles.detailsTitle}>המלצת אשפוז</Typography>
-            <div css={styles.recommendedLocation}>
-              <Typography variant='h4' color='primary'>1. מרכז רפואי רבין - בילינסון</Typography>
-              <Typography variant='h6'>
-                רחוב זאב ז׳בוטינסקי 39, פתח תקווה
-              </Typography>
-            </div>
-            <div>
-              <Typography variant='h4' color='primary'>2. מרכז רפואי רבין - בילינסון</Typography>
-              <Typography variant='h6'>
-                רחוב זאב ז׳בוטינסקי 39, פתח תקווה
-              </Typography>
-            </div>
-          </div>
-        </div>
+        {(recommendation || loading) && <div css={styles.location}>
+          {
+            loading ? <CircularProgress/> : (
+              <div css={styles.locationBox}>
+                <div css={styles.icon}>
+                  <LocationOn htmlColor='#fff' />
+                </div>
+                <Typography variant='h5' css={styles.detailsTitle}>המלצת אשפוז</Typography>
+                <div css={styles.recommendedLocation}>
+                  <Typography variant='h4' color='primary'>1. מרכז רפואי רבין - בילינסון</Typography>
+                  <Typography variant='h6'>
+                    רחוב זאב ז׳בוטינסקי 39, פתח תקווה
+                  </Typography>
+                </div>
+                <div>
+                  <Typography variant='h4' color='primary'>2. מרכז רפואי רבין - בילינסון</Typography>
+                  <Typography variant='h6'>
+                    רחוב זאב ז׳בוטינסקי 39, פתח תקווה
+                  </Typography>
+                </div>
+              </div>
+            )
+          }
+        </div>}
       </div>
     </div>
   )

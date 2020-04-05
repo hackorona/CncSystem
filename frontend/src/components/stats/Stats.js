@@ -18,13 +18,13 @@ const styles = {
   },
   icon: {
     borderRadius: '50%',
-    background: '#F7685B',
-    width: 40,
-    height: 40,
-    marginBottom: 10,
+    background: 'rgba(111, 82, 237, 0.07)',
+    width: 86,
+    height: 86,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    marginLeft: 25,
   },
   radioGroup: {
     display: 'flex',
@@ -75,8 +75,24 @@ const styles = {
     display: 'flex',
     padding: 30,
     paddingLeft: 10,
-  }
+  },
 };
+
+const StatBox = ({ icon, num, title, subtitle, color }) => (
+  <div css={styles.boxInner}>
+    <div css={styles.icon}>
+      <img src={icon}/>
+    </div>
+    <div>
+      <Typography variant='h5' style={{ color, fontWeight: 600 }}>{num}</Typography>
+      <Typography>{title}</Typography>
+      <Typography variant='caption'>
+        {subtitle}
+      </Typography>
+    </div>
+  </div>
+)
+
 
 export const Stats = () => {
   return (
@@ -93,40 +109,39 @@ export const Stats = () => {
         <div css={styles.statsContainer}>
           <div css={styles.column}>
             <div css={styles.shadowBox}>
-              <div css={styles.boxInner}>
-                <img src={bed}/>
-                <div>
-                  <Typography variant='h5'>6000</Typography>
-                  <Typography>מיטות אשפוז פנויות</Typography>
-                  <Typography variant='caption'>סה״כ מיטות אשפוז: 1000</Typography>
-                </div>
-              </div>
+              <StatBox
+                num={600}
+                color={'#6F52ED'}
+                title={"מיטות אשפוז פנויות"}
+                subtitle={"סה״כ מיטות אשפוז: 1000"}
+                icon={bed}
+              />
             </div>
             <div css={styles.shadowBox}>
               <Typography variant='subtitle1' css={styles.boxTitle}>
                 מיטות אשפוז פנויות
               </Typography>
               <div css={styles.chartContainer}>
-              <StyledPieChart/>
+                <StyledPieChart available={60} occupiedColor={'#6F52ED'}/>
               </div>
             </div>
           </div>
           <div css={styles.column}>
             <div css={styles.shadowBox}>
-              <div css={styles.boxInner}>
-                <img src={ventilator}/>
-                <div>
-                  <Typography variant='h5'>800</Typography>
-                  <Typography>מכונות הנשמה פנויות</Typography>
-                  <Typography variant='caption'>סה״כ מכונות הנשמה: 1000</Typography>
-                </div>
-              </div>
+              <StatBox
+                color={'#FFB946'}
+                num={800}
+                title={"מכונות הנשמה פנויות"}
+                subtitle={"סה״כ מכונות הנשמה: 1000"}
+                icon={ventilator}/>
             </div>
             <div css={styles.shadowBox}>
               <Typography variant='subtitle1' css={styles.boxTitle}>
                 מכונות הנשמה פנויות
               </Typography>
-              <StyledPieChart/>
+              <div css={styles.chartContainer}>
+                <StyledPieChart available={60} occupiedColor={'#FFB946'} />
+              </div>
             </div>
           </div>
         </div>

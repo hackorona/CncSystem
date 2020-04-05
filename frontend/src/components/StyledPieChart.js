@@ -1,10 +1,14 @@
 import React from 'react';
 import ReactMinimalPieChart from 'react-minimal-pie-chart';
+import { Typography, } from '@material-ui/core';
 import { jsx } from '@emotion/core';
 
-export const StyledPieChart = () => {
+export const StyledPieChart = ({ available, occupiedColor }) => {
   return (
-    <div style={{ width: 150, height: 150 }}>
+    <div style={{ width: 150, height: 150, position: 'relative' }}>
+      <div style={{ position: 'absolute', top: 0, left: 0, width: '100%' , height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Typography variant='h3'>{available}%</Typography>
+      </div>
       <ReactMinimalPieChart
         animate={false}
         animationDuration={500}
@@ -15,10 +19,10 @@ export const StyledPieChart = () => {
           {
             color: '#2CEB83',
             title: 'available',
-            value: 60
+            value: available
           },
           {
-            color: '#C13C37',
+            color: occupiedColor,
             title: 'occupied',
             value: 30
           },

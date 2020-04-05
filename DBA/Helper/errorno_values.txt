@@ -28,3 +28,4 @@
 
 4000 - general error, cannot inserts row to dbo.MedicalCentersPatients table
 
+5010 - combo data description does not exists on dbo.ComboData table

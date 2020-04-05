@@ -100,3 +100,8 @@ IF COL_LENGTH('dbo.MedicalCenters','MedicalCentersType') IS NULL
 IF COL_LENGTH('dbo.Users','UserRole') IS NULL
 	ALTER TABLE dbo.Users
 		ADD	UserRole				nvarchar(100)		NULL
+
+IF COL_LENGTH('dbo.ReservedBeds','VentilationMachines') IS NULL
+	ALTER TABLE dbo.ReservedBeds
+		ADD	VentilationMachines		tinyint		NOT NULL	DEFAULT (0)
+

@@ -15,11 +15,10 @@ CREATE FUNCTION dbo.udf_ReservedBeds (
 RETURNS TABLE
 AS
 RETURN
-    SELECT	MedicalCenterID				MedicalCenterID,
-			DepartmentID				DepartmentID,
-			ISNULL (COUNT (1), 0)		ReservedBeds
+    SELECT	MedicalCenterID							MedicalCenterID,
+			ISNULL (COUNT (1), 0)					ReservedBeds,
+			ISNULL (SUM (VentilationMachines), 0)	VentilationMachines	
 	FROM	dbo.ReservedBeds
 	WHERE	DATEADD (hour, -@ReserveBedHours, getdate()) <= LogDate
-	GROUP BY MedicalCenterID,
-			DepartmentID
+	GROUP BY MedicalCenterID
 

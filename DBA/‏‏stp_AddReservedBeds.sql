@@ -5,12 +5,14 @@ GO
 
 /* Version 1.0.0 - OhadP 03/04/2020 Initial Version */
 /* Version 1.0.1 - OhadP 04/04/2020 add SELECT @out_json, default was added to @out_json and it's not required */
+/* Version 1.0.2 - OhadP 05/04/2020 add VentilationMachines column */
 
 /*
 @in_json format:	
 	{
 		"medicalcenterid": "1", 
-		"departmentid": "3"
+		"departmentid": "3",
+		"reserveventilationmachine": "1"
 	}
 
 @out_json format:
@@ -37,15 +39,18 @@ BEGIN
 
 	-- gets data from json string
 
-	DECLARE @MedicalCenterID	int
-	DECLARE @DepartmentID		int
+	DECLARE @MedicalCenterID		int
+	DECLARE @DepartmentID			int
+	DECLARE @VentilationMachines	tinyint
 
-	SELECT	@MedicalCenterID	= MedicalCenterID,
-			@DepartmentID		= DepartmentID
+	SELECT	@MedicalCenterID		= MedicalCenterID,
+			@DepartmentID			= DepartmentID,
+			@VentilationMachines	= VentilationMachines
 	FROM	OPENJSON(@in_json)
 	WITH (
-			MedicalCenterID		int					'$.medicalcenterid',
-			DepartmentID		int					'$.departmentid'
+			MedicalCenterID			int			'$.medicalcenterid',
+			DepartmentID			int			'$.departmentid',
+			VentilationMachines		tinyint		'$.reserveventilationmachine'
 	) AS jsonValues
 	
 	/********************************************************************************************************************/
@@ -60,6 +65,9 @@ BEGIN
 		-- medical center id not exists on dbo.MedicalCenters table
 		SET @ErrorNo = 1016
 
+	IF @VentilationMachines IS NULL
+		SET @VentilationMachines = 0
+
 	/********************************************************************************************************************/
 
 	IF @ErrorNo = 0
@@ -67,9 +75,11 @@ BEGIN
 		BEGIN TRY
 			INSERT INTO dbo.ReservedBeds (
 						MedicalCenterID,
-						DepartmentID)
+						DepartmentID,
+						VentilationMachines)
 				SELECT	@MedicalCenterID,
-						@DepartmentID
+						@DepartmentID,
+						@VentilationMachines
 		END TRY
 		BEGIN CATCH
 			-- general error, cannot inserts row to dbo.MedicalCentersPatients table

@@ -40,7 +40,7 @@ export const MainDashboard = ({ store }) => {
             <Admin medicalCenters={store.admin.medicalCanters} />
           </Route>
           <Route path={`${match.path}/stats`}>
-            <Stats />
+            <Stats medicalCenters={store.admin.medicalCanters}/>
           </Route>
         </Switch>
       </div>

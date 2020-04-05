@@ -94,7 +94,7 @@ const StatBox = ({ icon, num, title, subtitle, color, backgroundColor }) => (
   </div>
 );
 
-export const Stats = () => {
+export const Stats = ({ medicalCenters }) => {
   return (
     <div css={styles.container}>
       <Typography variant='h5' css={styles.title}>
@@ -106,7 +106,7 @@ export const Stats = () => {
             <Typography variant='subtitle1' css={styles.boxTitle}>
               מפת מרכזים רפואיים
             </Typography>
-            <MainMap/>
+            <MainMap locations={medicalCenters}/>
           </div>
         </div>
         <div css={styles.statsContainer}>

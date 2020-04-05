@@ -1,18 +1,20 @@
 import React from 'react';
 import GoogleMapReact from 'google-map-react';
 import { inject, Observer } from 'mobx-react';
+import { Marker } from './Marker';
 
 const styles = {
   container: {
     height: '100%',
     width: '100%',
+    overflow: 'hidden',
   },
 };
 
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
 
-const MainMapView = ({ locations }) => {
+export const MainMap = ({ locations }) => {
   const defaultProps = {
     center: {
       lat: 32.0853,
@@ -44,14 +46,18 @@ const MainMapView = ({ locations }) => {
               defaultZoom={defaultProps.zoom}
               distanceToMouse={distanceToMouse}
             >
-
-                    <AnyReactComponent
-                      lat={59.955413}
-                      lng={30.337844}
-                      text="My Marker"
+              {
+                list.map(location => {
+                  return (
+                    <Marker
+                      key={location.id}
+                      lat={location.coords.lat}
+                      lng={location.coords.lng}
+                      location={location}
                     />
-
-
+                  )
+                })
+              }
             </GoogleMapReact>
           </div>
         )
@@ -60,6 +66,3 @@ const MainMapView = ({ locations }) => {
     </Observer>
   )
 };
-
-export const MainMap = inject('store')(MainMapView);
-

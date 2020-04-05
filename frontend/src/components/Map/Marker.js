@@ -1,24 +1,24 @@
 import React from 'react';
 import { Paper, Typography } from '@material-ui/core';
+import starOfDavid from './../../images/start_of_david.svg';
 
 const styles = {
   marker: {
-    width: 50,
-    height: 50,
-    background: 'rgba(243,7,7,0.3)',
+    width: 20,
+    height: 20,
+    background: '#fff',
     borderRadius: '50%',
     cursor: 'pointer',
     position: 'relative',
+    boxShadow: '0px 0px 5px rgba(0, 0, 0, 0.3)',
   },
   markerInner: {
     padding: 5,
     position: 'absolute',
-    top: -95,
-    height: 80,
-    width: 110,
+    top: -2,
+    right: 25,
     zIndex: 999,
-    display: 'flex',
-    flexDirection: 'column',
+    boxShadow: '0px 0px 6px rgba(0, 0, 0, 0.26)',
   },
 };
 
@@ -30,9 +30,10 @@ export const Marker = ({ location }) => {
     <div
       onClick={() => setIsOpen(!isOpen)}
       style={styles.marker}>
+      <img src={starOfDavid} style={{ marginLeft: 3, marginTop: 3, }}/>
       {isOpen &&
         <Paper style={styles.markerInner}>
-          <Typography variant="caption">{name}</Typography>
+          <Typography variant="caption" style={{ whiteSpace: 'nowrap' }}>{name}</Typography>
         </Paper>
       }
     </div>

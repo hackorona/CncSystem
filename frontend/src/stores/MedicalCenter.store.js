@@ -6,6 +6,7 @@ export default class MedicalCenter {
   @observable id;
   @observable name;
   @observable address;
+  @observable coords;
   @observable departments = [];
 
   constructor (data) {
@@ -14,6 +15,7 @@ export default class MedicalCenter {
       this.type = data.type;
       this.name = data.name;
       this.address = data.address;
+      this.coords = data.coords;
       this.departments = data.departments.map(department => new Department(department));
     }
   }

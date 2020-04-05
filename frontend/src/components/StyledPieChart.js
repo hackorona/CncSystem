@@ -79,7 +79,6 @@ export const StyledPieChart = ({ available, occupied, availableTitle, occupiedTi
           100
         ]}
       />
-
     </div>
       <ul css={styles.list}>
         <li>

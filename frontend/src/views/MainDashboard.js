@@ -44,7 +44,9 @@ export const MainDashboard = ({ store }) => {
                     getRecommendation={store.main.getRecommendation} />
                 </Route>
                 <Route path={`${match.path}/admin/medical-centers`}>
-                  <Admin medicalCenters={store.admin.medicalCanters} />
+                  <Admin
+                    onAdd={store.admin.addCenter}
+                    medicalCenters={store.admin.medicalCanters} />
                 </Route>
                 <Route path={`${match.path}/stats`}>
                   <Stats medicalCenters={store.admin.medicalCanters}/>

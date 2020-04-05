@@ -1,5 +1,5 @@
 import { observable, action, computed } from 'mobx';
-import { medicalCenterListStub } from '../consts/stubs';
+import { medicalCenterListStub, medicalCenterStub1 } from '../consts/stubs';
 import MedicalCenter from './MedicalCenter.store';
 
 export default class Admin {
@@ -19,5 +19,17 @@ export default class Admin {
 
   @action getMedicalCenters = () => {
     this.medicalCanters = medicalCenterListStub.map(center => new MedicalCenter(center));
+  };
+
+  @action addCenter = () => {
+    const centerToAdd = {
+      ...medicalCenterStub1,
+      ...{
+        id: 11,
+        name: 'מרכז רפואי וולפסון',
+        address: 'רחוב הלוחמים 62, חולון'
+      }
+    };
+    this.medicalCanters.push(new MedicalCenter(centerToAdd));
   }
 }

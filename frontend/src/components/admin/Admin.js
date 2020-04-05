@@ -62,8 +62,14 @@ const centerTypesLabels = {
   hotel: 'מלון קורונה'
 };
 
-export const Admin = ({ medicalCenters }) => {
+export const Admin = ({ medicalCenters, onAdd }) => {
   const [open, setOpen] = React.useState(false);
+  const [selectedType, setSelectedType] = React.useState('hospital');
+
+  const onAddClick = () => {
+   setOpen(false);
+   onAdd();
+  };
 
   return (
     <div css={styles.container}>
@@ -96,8 +102,8 @@ export const Admin = ({ medicalCenters }) => {
                 </TableCell>
                 <TableCell align="left">{center.address}</TableCell>
                 <TableCell align="left">{center.departments.length}</TableCell>
-                <TableCell align="left">-</TableCell>
-                <TableCell align="left">-</TableCell>
+                <TableCell align="left">{center.departments[0].beds.all}</TableCell>
+                <TableCell align="left">{center.departments[0].ventilators.all}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -126,13 +132,33 @@ export const Admin = ({ medicalCenters }) => {
           </FormGroup>
           <FormGroup row css={styles.row}>
             <Typography css={styles.label}>סוג המרכז</Typography>
-            <Select variant='outlined' defaultValue={1} css={styles.select}>
-              <MenuItem value={1}>בית חולים</MenuItem>
-              <MenuItem value={2}>מלון קורונה</MenuItem>
+            <Select variant='outlined' defaultValue={selectedType} onChange={(e) => setSelectedType(e.target.value)} css={styles.select}>
+              <MenuItem value={'hospital'}>בית חולים</MenuItem>
+              <MenuItem value={'hotel'}>מלון אשפוז</MenuItem>
             </Select>
           </FormGroup>
+          <FormGroup row css={styles.row}>
+            <Typography css={styles.label}>מספר מיטות</Typography>
+            <TextField
+              autoFocus
+              size='small'
+              id="name"
+              variant='outlined'
+              style={{ marginLeft: 20 }}
+            />
+            {selectedType === 'hospital' &&
+            <React.Fragment>
+            <Typography style={{ marginLeft: 20 }}>מספר מכונות הנשמה</Typography>
+            <TextField
+              autoFocus
+              id="name"
+              size='small'
+              variant='outlined'
+            />
+            </React.Fragment>}
+          </FormGroup>
           <div css={styles.buttonContainer}>
-            <StyledButton css={styles.dialogButton}>
+            <StyledButton css={styles.dialogButton} onClick={onAddClick}>
               הוספה
             </StyledButton>
           </div>

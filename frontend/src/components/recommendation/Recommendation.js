@@ -85,6 +85,7 @@ const styles = {
 };
 
 export const Recommendation = ({ recommendation, loading, getRecommendation }) => {
+  const [severity, setSeverity] = React.useState('1');
   return (
     <div css={styles.container}>
       <Typography variant='h5' css={styles.title}>
@@ -114,16 +115,6 @@ export const Recommendation = ({ recommendation, loading, getRecommendation }) =
             </FormGroup>
             <FormGroup row css={styles.row}>
               <Typography css={styles.label}>
-              רחוב
-              </Typography>
-              <TextField
-                variant='outlined'
-                size='small'
-                css={styles.input}
-              />
-            </FormGroup>
-            <FormGroup row css={styles.row}>
-              <Typography css={styles.label}>
               קבוצת סיכון
               </Typography>
               <RadioGroup
@@ -144,13 +135,13 @@ export const Recommendation = ({ recommendation, loading, getRecommendation }) =
               <RadioGroup
                 aria-label="patient-state"
                 name="patient-state"
-                value={"yes"}
-                onChange={() => {}}
+                value={severity}
+                onChange={(e) => setSeverity(e.target.value)}
                 css={styles.radioGroup}
               >
-                <FormControlLabel value="yes" control={<Radio color='primary'/>} label="קל" />
-                <FormControlLabel value="no" control={<Radio color='primary'/>} label="בינוני" />
-                <FormControlLabel value="no" control={<Radio color='primary' />} label="קשה" />
+                <FormControlLabel value="1" control={<Radio color='primary'/>} label="קל" />
+                <FormControlLabel value="2" control={<Radio color='primary'/>} label="בינוני" />
+                <FormControlLabel value="3" control={<Radio color='primary' />} label="קשה" />
               </RadioGroup>
             </FormGroup>
 
@@ -169,18 +160,18 @@ export const Recommendation = ({ recommendation, loading, getRecommendation }) =
                   <LocationOn htmlColor='#fff' />
                 </div>
                 <Typography variant='h5' css={styles.detailsTitle}>המלצת אשפוז</Typography>
-                <div css={styles.recommendedLocation}>
-                  <Typography variant='h4' color='primary'>1. מרכז רפואי רבין - בילינסון</Typography>
-                  <Typography variant='h6'>
-                    רחוב זאב ז׳בוטינסקי 39, פתח תקווה
-                  </Typography>
-                </div>
-                <div>
-                  <Typography variant='h4' color='primary'>2. מרכז רפואי רבין - בילינסון</Typography>
-                  <Typography variant='h6'>
-                    רחוב זאב ז׳בוטינסקי 39, פתח תקווה
-                  </Typography>
-                </div>
+                {
+                  recommendation.map((rec, i) => (
+                    <div css={styles.recommendedLocation}>
+                      <Typography variant='h4' color='primary'>
+                        {i + 1}. {rec.name}
+                      </Typography>
+                      <Typography variant='h6'>
+                        {rec.address}
+                      </Typography>
+                    </div>
+                  ))
+                }
               </div>
             )
           }

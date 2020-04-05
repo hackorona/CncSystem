@@ -14,7 +14,11 @@ const styles = {
     display: 'flex',
   },
   details: {
-    flex: '1 1 50%'
+    flex: '1 1 50%',
+    marginBottom: 0,
+  },
+  subtitle: {
+    marginBottom: '23px !important',
   },
   location: {
     display: 'flex',
@@ -39,6 +43,7 @@ const styles = {
     background: '#F7685B',
     width: 40,
     height: 40,
+    marginBottom: 10,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -50,6 +55,7 @@ const styles = {
     flexGrow: 1,
   },
   row: {
+    display: 'flex',
     marginBottom: 10,
     alignItems: 'center',
   },
@@ -59,14 +65,21 @@ const styles = {
   radioGroup: {
     display: 'flex',
     flexDirection: 'row !important',
-    marginBottom: 60,
+    alignItems: 'center',
   },
   buttonContainer: {
+    marginTop: 60,
     display: 'flex',
     justifyContent: 'center',
   },
   button: {
     width: '100%',
+  },
+  detailsTitle: {
+    marginBottom: '25px !important',
+  },
+  recommendedLocation: {
+    marginBottom: '25px !important',
   }
 };
 
@@ -112,9 +125,9 @@ export const Recommendation = () => {
                 css={styles.input}
               />
             </FormGroup>
-            <FormGroup>
-              <Typography>
-              האם קיים סיכוי גבוה להחמרה במצב?
+            <FormGroup row css={styles.row}>
+              <Typography css={styles.label}>
+              קבוצת סיכון
               </Typography>
               <RadioGroup
                 aria-label="patient-state"
@@ -123,8 +136,24 @@ export const Recommendation = () => {
                 onChange={() => {}}
                 css={styles.radioGroup}
               >
-                <FormControlLabel value="yes" control={<Radio />} label="כן" />
-                <FormControlLabel value="no" control={<Radio />} label="לא" />
+                <FormControlLabel value="yes" control={<Radio color='primary' />} label="כן" />
+                <FormControlLabel value="no" control={<Radio color='primary' />} label="לא" />
+              </RadioGroup>
+            </FormGroup>
+            <FormGroup row css={styles.row}>
+              <Typography css={styles.label}>
+              חומרת מצב
+              </Typography>
+              <RadioGroup
+                aria-label="patient-state"
+                name="patient-state"
+                value={"yes"}
+                onChange={() => {}}
+                css={styles.radioGroup}
+              >
+                <FormControlLabel value="yes" control={<Radio color='primary'/>} label="קל" />
+                <FormControlLabel value="no" control={<Radio color='primary'/>} label="בינוני" />
+                <FormControlLabel value="no" control={<Radio color='primary' />} label="קשה" />
               </RadioGroup>
             </FormGroup>
 
@@ -140,11 +169,19 @@ export const Recommendation = () => {
             <div css={styles.icon}>
               <LocationOn htmlColor='#fff' />
             </div>
-            <Typography variant='h5'>המלצת אשפוז</Typography>
-            <Typography variant='h4' color='primary'>מרכז רפואי רבין - בילינסון</Typography>
-            <Typography variant='h6'>
-              רחוב זאב ז׳בוטינסקי 39, פתח תקווה
-            </Typography>
+            <Typography variant='h5' css={styles.detailsTitle}>המלצת אשפוז</Typography>
+            <div css={styles.recommendedLocation}>
+              <Typography variant='h4' color='primary'>1. מרכז רפואי רבין - בילינסון</Typography>
+              <Typography variant='h6'>
+                רחוב זאב ז׳בוטינסקי 39, פתח תקווה
+              </Typography>
+            </div>
+            <div>
+              <Typography variant='h4' color='primary'>2. מרכז רפואי רבין - בילינסון</Typography>
+              <Typography variant='h6'>
+                רחוב זאב ז׳בוטינסקי 39, פתח תקווה
+              </Typography>
+            </div>
           </div>
         </div>
       </div>

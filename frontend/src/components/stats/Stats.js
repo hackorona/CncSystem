@@ -5,6 +5,7 @@ import { jsx } from '@emotion/core'
 import bed from '../../images/bed.svg';
 import ventilator from '../../images/ventilator.svg';
 import { StyledPieChart } from '../StyledPieChart';
+import { MainMap } from '../Map/MainMap';
 
 const styles = {
   container: {
@@ -78,9 +79,9 @@ const styles = {
   },
 };
 
-const StatBox = ({ icon, num, title, subtitle, color }) => (
+const StatBox = ({ icon, num, title, subtitle, color, backgroundColor }) => (
   <div css={styles.boxInner}>
-    <div css={styles.icon}>
+    <div css={styles.icon} style={{backgroundColor}}>
       <img src={icon}/>
     </div>
     <div>
@@ -91,8 +92,7 @@ const StatBox = ({ icon, num, title, subtitle, color }) => (
       </Typography>
     </div>
   </div>
-)
-
+);
 
 export const Stats = () => {
   return (
@@ -102,8 +102,11 @@ export const Stats = () => {
       </Typography>
       <div css={styles.containerInner}>
         <div css={styles.mapContainer}>
-          <div css={styles.shadowBox}>
-            map
+          <div css={styles.shadowBox} style={{ height: 500 }}>
+            <Typography variant='subtitle1' css={styles.boxTitle}>
+              מפת מרכזים רפואיים
+            </Typography>
+            <MainMap/>
           </div>
         </div>
         <div css={styles.statsContainer}>
@@ -122,14 +125,21 @@ export const Stats = () => {
                 מיטות אשפוז פנויות
               </Typography>
               <div css={styles.chartContainer}>
-                <StyledPieChart available={60} occupiedColor={'#6F52ED'}/>
+                <StyledPieChart
+                  availableTitle={'מיטות פנויות'}
+                  occupiedTitle={'מיטות תפוסות'}
+                  occupied={40}
+                  available={60}
+                  occupiedColor={'#6F52ED'}/>
               </div>
             </div>
           </div>
+
           <div css={styles.column}>
             <div css={styles.shadowBox}>
               <StatBox
                 color={'#FFB946'}
+                backgroundColor={'rgba(255, 185, 70, 0.07)'}
                 num={800}
                 title={"מכונות הנשמה פנויות"}
                 subtitle={"סה״כ מכונות הנשמה: 1000"}
@@ -140,7 +150,12 @@ export const Stats = () => {
                 מכונות הנשמה פנויות
               </Typography>
               <div css={styles.chartContainer}>
-                <StyledPieChart available={60} occupiedColor={'#FFB946'} />
+                <StyledPieChart
+                  availableTitle={'מכונות הנשמה פנויות'}
+                  occupiedTitle={'מכונות הנשמה תפוסות'}
+                  occupied={40}
+                  available={60}
+                  occupiedColor={'#FFB946'} />
               </div>
             </div>
           </div>

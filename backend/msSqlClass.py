@@ -19,6 +19,14 @@ class MsSqlClass():
 		return(self.cursor)
 
 
+	def reserveBed(self, medicalCenterId, departmentId, reserveVentilationMachine):
+		params = ('{"medicalcenterid":"' + medicalCenterId + '",'
+				'"departmentid":"' + departmentId + '",'
+				'"reserveventilationmachine":"' + reserveVentilationMachine + '"}')
+		
+		sql = "EXEC dbo.stp_AddReservedBeds @json = '" + params + "'"
+		self.cursor.execute(sql)
+		self.cursor.commit()
 	
 	# position : tuple(long, lat)
 	# sevirity : num
@@ -28,9 +36,15 @@ class MsSqlClass():
 		resrved = self.getReserved()
 		hospitalDistanceDic = {}
 		for hospital in hospitals:
-			p2 = []
-			for f in hospital["geolocation"].split(","): p2.append(float(f))
-			hospitalDistanceDic[hospital["medicalcenterdescription"]] = math.sqrt(((position[0]-p2[0])**2)+((position[1]-p2[1])**2))
+			if risk == True:
+				if (int(hospital["vacantventilationmachines"]) > 0):
+					p2 = []
+					for f in hospital["geolocation"].split(","): p2.append(float(f))
+					hospitalDistanceDic[hospital["medicalcenterdescription"]] = math.sqrt(((position[0]-p2[0])**2)+((position[1]-p2[1])**2))
+			else:
+				p2 = []
+				for f in hospital["geolocation"].split(","): p2.append(float(f))
+				hospitalDistanceDic[hospital["medicalcenterdescription"]] = math.sqrt(((position[0]-p2[0])**2)+((position[1]-p2[1])**2))
 		dicToSend = {k: v for k, v in sorted(hospitalDistanceDic.items(), key=lambda item: item[1])}
 		jsonDic = {}
 		for key in dicToSend.keys()[:self.numOfCloseHospitalToShow]:
@@ -61,7 +75,7 @@ class MsSqlClass():
 				'"medicalcenterstype":"' + medicalType + '"}')
 		
 		
-		sql = "EXEC dbo.stp_AddMedicalCenter  @in_json = '" + params + "'"
+		sql = "EXEC dbo.stp_AddMedicalCenter @in_json = '" + params + "'"
 		self.cursor.execute(sql)
 		self.cursor.commit()
 
@@ -85,15 +99,28 @@ class MsSqlClass():
 				return(self.strToDic(i[1:-1]))
 		return res
 	
+	def stp_UpdateMedicalCentersNumOfPatients(self, medId, departmentid, severity, availablebeds, iser, availableventilationmachines, occupiedventilationmachines):
+		params = ('{"medicalcenterid":"' + medId + '",'
+				'"departmentid":"' + street + '",'
+				'"severity":" ' + severity + '",'
+				'"availablebeds":"' + availablebeds + '",'
+				'"occupiedbeds":"' + occupiedbeds + '",'
+				'"iser":"' + iser + '",'
+				'"availableventilationmachines":"' + availableventilationmachines + '",'
+				'"occupiedventilationmachines":"' + occupiedventilationmachines + '"}')
+		sql = "EXEC dbo.stp_UpdateMedicalCentersNumOfPatients @in_json = '" + params + "'"
+		self.cursor.execute(sql)
+		self.cursor.commit()
+	
 	
 	def getReserved(self):
 		sql = "EXEC dbo.stp_GetReservedBeds"
 		self.cursor.execute(sql)
-		res = []
+		res = {}
 		for row in self.cursor:
 			for i in row:
 				dic = json.loads(i[1:-1])
-				res.append(dic)
+				res[dic["medicalcenterid"]] = (dic["reservedbeds"], dic["ventilationmachines"])
 		return res
 		
 	def getFreeSpaces(self, sevirity):
@@ -102,9 +129,12 @@ class MsSqlClass():
 		sql = "EXEC dbo.stp_GetMedicalCentersNumOfPatients @in_json = '" + params + "'"
 		self.cursor.execute(sql)
 		for row in self.cursor:
-			res.append(row)
+			for i in row:
+				dic = json.loads(i[1:-1])
+				res.append(row)
 		return res
 
 if __name__ == '__main__':
 	newDbConn = MsSqlClass()
 	newDbConn.conect('LAPTOP-5NIM0VP7\SQLEXPRESS', 'coronaCareDb')
+	dic = newDbConn.getReserved()

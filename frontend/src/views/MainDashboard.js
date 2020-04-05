@@ -8,6 +8,7 @@ import { TopBar } from '../components/TopBar';
 import { Report } from '../components/report/Report';
 import { Recommendation } from '../components/recommendation/Recommendation';
 import { Admin } from '../components/admin/Admin';
+import { Stats } from '../components/stats/Stats';
 
 const styles = {
   container: {
@@ -37,6 +38,9 @@ export const MainDashboard = ({ store }) => {
           </Route>
           <Route path={`${match.path}/admin/medical-centers`}>
             <Admin medicalCenters={store.admin.medicalCanters} />
+          </Route>
+          <Route path={`${match.path}/stats`}>
+            <Stats />
           </Route>
         </Switch>
       </div>

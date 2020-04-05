@@ -24,7 +24,7 @@ class MsSqlClass():
 				'"departmentid":"' + departmentId + '",'
 				'"reserveventilationmachine":"' + reserveVentilationMachine + '"}')
 		
-		sql = "EXEC dbo.stp_AddReservedBeds @json = '" + params + "'"
+		sql = "EXEC dbo.stp_AddReservedBeds @in_json = '" + params + "'"
 		self.cursor.execute(sql)
 		self.cursor.commit()
 	
@@ -32,7 +32,7 @@ class MsSqlClass():
 	# sevirity : num
 	# risk	 : 0 / 1 
 	def getClosestMedicalCenters(self, position, sevirity, risk):
-		hospitals = self.newDbConn.getFreeSpaces(sevirity)
+		hospitals = self.getFreeSpaces(sevirity)
 		resrved = self.getReserved()
 		hospitalDistanceDic = {}
 		for hospital in hospitals:
@@ -47,9 +47,11 @@ class MsSqlClass():
 				hospitalDistanceDic[hospital["medicalcenterdescription"]] = math.sqrt(((position[0]-p2[0])**2)+((position[1]-p2[1])**2))
 		dicToSend = {k: v for k, v in sorted(hospitalDistanceDic.items(), key=lambda item: item[1])}
 		jsonDic = {}
+		if not dicToSend:
+			return(jsonDic)
 		for key in dicToSend.keys()[:self.numOfCloseHospitalToShow]:
 			jsonDic[key] = dicToSend[key]
-		return jsonDic
+		return(jsonDic)
 	
 	
 	def addUser(self, firstName, lastName, idNum, username, pwdHash, pwdWord):
@@ -96,12 +98,13 @@ class MsSqlClass():
 		res = []
 		for row in self.cursor:
 			for i in row:
-				return(self.strToDic(i[1:-1]))
+				if i != None:
+					return(self.strToDic(i[1:-1]))
 		return res
 	
-	def stp_UpdateMedicalCentersNumOfPatients(self, medId, departmentid, severity, availablebeds, iser, availableventilationmachines, occupiedventilationmachines):
+	def stp_UpdateMedicalCentersNumOfPatients(self, medId, departmentid, severity, availablebeds, occupiedbeds, iser, availableventilationmachines, occupiedventilationmachines):
 		params = ('{"medicalcenterid":"' + medId + '",'
-				'"departmentid":"' + street + '",'
+				'"departmentid":"' + departmentid + '",'
 				'"severity":" ' + severity + '",'
 				'"availablebeds":"' + availablebeds + '",'
 				'"occupiedbeds":"' + occupiedbeds + '",'
@@ -119,8 +122,9 @@ class MsSqlClass():
 		res = {}
 		for row in self.cursor:
 			for i in row:
-				dic = json.loads(i[1:-1])
-				res[dic["medicalcenterid"]] = (dic["reservedbeds"], dic["ventilationmachines"])
+				if i != None:
+					dic = json.loads(i[1:-1])
+					res[dic["medicalcenterid"]] = (dic["reservedbeds"], dic["ventilationmachines"])
 		return res
 		
 	def getFreeSpaces(self, sevirity):
@@ -130,11 +134,13 @@ class MsSqlClass():
 		self.cursor.execute(sql)
 		for row in self.cursor:
 			for i in row:
-				dic = json.loads(i[1:-1])
-				res.append(row)
+				if i != None:
+					return(self.strToDic(i[1:-1]))
+				else:
+					return(res)
 		return res
 
 if __name__ == '__main__':
 	newDbConn = MsSqlClass()
 	newDbConn.conect('LAPTOP-5NIM0VP7\SQLEXPRESS', 'coronaCareDb')
-	dic = newDbConn.getReserved()
+	res=newDbConn.getClosestMedicalCenters("31.45345345, 65.44353453", "1", "1")

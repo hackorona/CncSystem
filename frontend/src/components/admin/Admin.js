@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import React from 'react';
-import { Typography, Table, TableBody, TableCell, TextField, TableContainer, TableHead, TableRow, Paper, Dialog, DialogContent, FormGroup, Select, MenuItem } from '@material-ui/core';
+import { Typography, Table, TableBody, TableCell, TextField, TableContainer, TableHead, TableRow, Chip, Paper, Dialog, DialogContent, FormGroup, Select, MenuItem } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 import { jsx } from '@emotion/core'
 import { StyledButton } from '../StyledButton';
@@ -57,6 +57,11 @@ const styles = {
   }
 };
 
+const centerTypesLabels = {
+  hospital: 'בית חולים',
+  hotel: 'מלון קורונה'
+};
+
 export const Admin = ({ medicalCenters }) => {
   const [open, setOpen] = React.useState(false);
 
@@ -86,7 +91,9 @@ export const Admin = ({ medicalCenters }) => {
                   {center.id}
                 </TableCell>
                 <TableCell align="left">{center.name}</TableCell>
-                <TableCell align="left">{center.type}</TableCell>
+                <TableCell align="left">
+                  <Chip label={centerTypesLabels[center.type]}/>
+                </TableCell>
                 <TableCell align="left">{center.address}</TableCell>
                 <TableCell align="left">{center.departments.length}</TableCell>
                 <TableCell align="left">-</TableCell>

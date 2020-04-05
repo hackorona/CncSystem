@@ -8,6 +8,10 @@ export const medicalCenterStub = {
   type: 'hospital',
   id: 153,
   address: 'שדרות ההסתדרות 55, חיפה',
+  coords: {
+    lat: '32.940930',
+    lng: '35.075520',
+  },
   departments: [{
     id: '01',
     name: 'אשפוז רגיל',
